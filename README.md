@@ -1,6 +1,7 @@
 # LeglaneŁowiska
 Projekt 1/2 - Systemy Informatyczne
-##Stack
+
+## Stack
 - ReactJS
 - expressJS
 - MongoDB
