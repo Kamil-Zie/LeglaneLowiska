@@ -10,7 +10,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instalacja zależności
-RUN npm ci
+RUN npm i
 
 # Skopiowanie całego kodu źródłowego (w tym folderów public i src)
 COPY . .
