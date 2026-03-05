@@ -24,7 +24,7 @@ FROM base as deps
 # Leverage a cache mount to /root/.npm to speed up subsequent builds.
 # Leverage bind mounts to package.json and package-lock.json to avoid having to copy them
 # into this layer.
-RUN ["npm", "ci", "--only=production", "--ignore-scripts", "--prefer-offline", "--no-audit", "--progress=false"]
+RUN ["npm", "i"]
 
 ################################################################################
 # Create a stage for building the application.
