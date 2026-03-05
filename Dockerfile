@@ -13,7 +13,7 @@ ARG NODE_VERSION=22.13.0
 FROM node:${NODE_VERSION}-alpine as base
 
 # Set working directory for all build stages.
-WORKDIR /usr/src/app
+WORKDIR /
 
 
 ################################################################################
@@ -29,10 +29,6 @@ RUN ["npm", "i"]
 ################################################################################
 # Create a stage for building the application.
 FROM deps as build
-
-# Download additional development dependencies before building, as some projects require
-# "devDependencies" to be installed to build. If you don't need this, remove this step.
-RUN ["npm", "ci", "--ignore-scripts", "--prefer-offline", "--no-audit", "--progress=false"]
 
 # Copy the rest of the source files into the image.
 COPY . .
