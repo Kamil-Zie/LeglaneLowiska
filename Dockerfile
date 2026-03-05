@@ -12,13 +12,14 @@ ARG NODE_VERSION=22.13.0
 # Use node image for base image for all stages.
 FROM node:${NODE_VERSION}-alpine as base
 
-# Set working directory for all build stages.
-WORKDIR /
+# Set working directory for all build stages.# Zamiast: WORKDIR /
+WORKDIR /usr/src/app
 
 
 ################################################################################
 # Create a stage for installing production dependecies.
 FROM base as deps
+COPY package*.json ./
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.npm to speed up subsequent builds.
