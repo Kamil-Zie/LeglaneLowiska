@@ -25,7 +25,7 @@ FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
 
 # Wystawienie portu 80 (domyślny port Nginx)
-EXPOSE 80
+EXPOSE 2204
 
 # Uruchomienie Nginxa
 CMD ["nginx", "-g", "daemon off;"]
