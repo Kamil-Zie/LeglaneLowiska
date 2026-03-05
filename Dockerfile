@@ -60,4 +60,4 @@ COPY --from=build /usr/src/app ./app
 EXPOSE 3000
 
 # Run the application.
-CMD ["npm", "start"]
+CMD ["npm","run" ,"start"]
