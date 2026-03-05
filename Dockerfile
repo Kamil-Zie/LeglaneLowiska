@@ -8,14 +8,13 @@ WORKDIR /app
 
 # Skopiowanie plików konfiguracyjnych i instalacja zależności
 COPY package*.json ./
-RUN npm ci
+RUN ["npm", "install"]
 
 # Skopiowanie reszty kodu (w tym folderów src i public)
 COPY . .
 
 # Zbudowanie aplikacji (wynik trafi do folderu /app/build)
-RUN npm run build
-
+RUN ["npm", "run", "build"]
 # ==========================================
 # Etap 2: Serwowanie aplikacji (Nginx)
 # ==========================================
