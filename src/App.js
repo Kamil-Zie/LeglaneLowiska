@@ -1,16 +1,17 @@
 import logo from './logo.svg';
 import './App.css';
+import SignIn from './components/SignComponent/SignIn';
+import SignUp from './components/SignComponent/SignUp';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Leglane Lowiska - Frontend
-        </p>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
