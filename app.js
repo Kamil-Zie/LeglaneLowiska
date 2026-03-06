@@ -9,7 +9,9 @@ dotenv.config();
 
 //MongoDB connection
 const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI, {
+  dbName: 'LegalneLowiska'
+})
 
 const db = mongoose.connection;
 console.log("Connecting");
@@ -27,6 +29,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/users/signin', require('./routes/users/signin'));
+app.use('/api/users/signup', require('./routes/users/singup'));
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
