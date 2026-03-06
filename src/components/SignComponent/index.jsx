@@ -38,9 +38,8 @@ const SignComponent = ({SignType}) => {
                         .then(data => {
                             if(data.token) {
                                 localStorage.setItem('token', data.token);
-                                alert("Sign In successful!");
                             } else {
-                                alert("Sign In failed!");
+                                console.log("Sign In failed!");
                             }
                         })
                     } else {
@@ -57,13 +56,9 @@ const SignComponent = ({SignType}) => {
                                 email: email,
                                 password: password
                             })
-                        }).then(res => res.json())
-                        .then(data => {
-                            if(data.token) {
-                                localStorage.setItem('token', data.token);
-                                alert("Sign Up successful!");
-                            } else {
-                                alert("Sign Up failed!");
+                        }).then((res) => {
+                            if(res.status === 201 && res.headers.get('set-cookie')) {
+                                return <Link to="/webpage" />
                             }
                         })
                     }
