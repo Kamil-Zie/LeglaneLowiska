@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
-const { useLayoutEffect } = require('react');
 
 const UserSchema = new mongoose.Schema({
     nazwa: { type: String, required: true, unique: true },
     miasto: { type: String },
     email: { type: String, required: true, unique: true },
-    posiadaneLicencje: { type: {idLicencji:{type:mongoose.Schema.Types.ObjectId,ref: 'Licencje'} , startLicencji:Date, koniecLicencji:Date} },
+    haslo: { type: String, required: true },
+    posiadaneLicencje: [{ type: {idLicencji:{type:mongoose.Schema.Types.ObjectId,ref: 'Licencje'} , startLicencji:Date, koniecLicencji:Date} }],
     iloscOpinii: { type: Number, default: 0 },
     ulubioneLowiska: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Lowisko' }],
-    czlonePZW: { type: Boolean, default: false },
-    createdAt: { type: Date, default: Date.now }
+    czlonePZW: { type: String, default: false },
+    createdAt: { type: Date, default: Date.now },
+    rola: { type: String, default: "user" }
 });
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model('Uzytkownik', UserSchema, "Uzytkownicy");
 module.exports = User;
