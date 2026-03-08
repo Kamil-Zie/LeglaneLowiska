@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../../models/uzytkownicy');
+const User = require('../../models/uzytkownik');
 const bcrypt = require('bcrypt');
 const { createToken } = require('../../utils/JWT_Token');
-const { render } = require('../../app');
 
 router.post("/", async (req, res) => {
   const { email, password } = req.body;
