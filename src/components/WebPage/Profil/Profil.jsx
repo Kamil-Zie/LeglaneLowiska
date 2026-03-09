@@ -1,17 +1,8 @@
 import './pr0fil.css';
-import Navbar from '../NavBar/navbar';
 
 const Profil = () => {
   return (
     <div className="web-page-container">
-<<<<<<< HEAD
-      {/* NAWIGACJA */}
-      
-=======
-      <Navbar />
-
->>>>>>> bafc7bf74e3a3da117cf9d837c3b63d5e02a85d9
-      {/* GŁÓWNA TREŚĆ PROFILU */}
       <div className="profil-wrapper">
         <div className="profil-card">
           

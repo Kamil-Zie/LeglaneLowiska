@@ -1,5 +1,3 @@
-import Navbar from '../NavBar/navbar';
-
 const MojeLowiska = () => {
   const ulubione = [
     { id: 1, nazwa: "Zalew Zegrzyński", opis: "Najlepsze leszcze przy molo.", typ: "PZW" },
@@ -7,12 +5,7 @@ const MojeLowiska = () => {
     { id: 3, nazwa: "Wisła - odcinek 402", opis: "Głęboki dół, szukaj sandacza.", typ: "PZW" },
   ];
 
-<<<<<<< HEAD
-  return (
-    <h1 style={{ textAlign: 'center', marginTop: '50px' }}>Moje Łowiska - w budowie...</h1>
-=======
   return (<>
-      <Navbar />
       <div style={{ padding: '40px' }}>
         <h2>Moje ulubione łowiska</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px', marginTop: '20px' }}>
@@ -26,7 +19,6 @@ const MojeLowiska = () => {
         </div>
       </div>
   </>
->>>>>>> bafc7bf74e3a3da117cf9d837c3b63d5e02a85d9
   );
 };
 

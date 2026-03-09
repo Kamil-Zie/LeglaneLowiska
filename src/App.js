@@ -23,11 +23,19 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
       <Routes>
-        <Route path="/" element={<WebPage />} />
+        <Route path="/" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/webpage" element={<WebPage/>} />
-        <Route path="/mapy" element={<Mapy />} />
-        <Route path="/webpage" element={<WebPage />} />
+        <Route path="/mapy" element={
+            <ProtectedRoute>
+              <Mapy />
+            </ProtectedRoute>
+          } />
+        <Route path="/webpage" element={
+            <ProtectedRoute>
+              <WebPage />
+            </ProtectedRoute>
+        } />
         <Route path="/profil" element={
             <ProtectedRoute>
               <Profil />
