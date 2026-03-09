@@ -7,6 +7,10 @@ const MojeLowiska = () => {
     { id: 3, nazwa: "Wisła - odcinek 402", opis: "Głęboki dół, szukaj sandacza.", typ: "PZW" },
   ];
 
+<<<<<<< HEAD
+  return (
+    <h1 style={{ textAlign: 'center', marginTop: '50px' }}>Moje Łowiska - w budowie...</h1>
+=======
   return (<>
       <Navbar />
       <div style={{ padding: '40px' }}>
@@ -22,6 +26,7 @@ const MojeLowiska = () => {
         </div>
       </div>
   </>
+>>>>>>> bafc7bf74e3a3da117cf9d837c3b63d5e02a85d9
   );
 };
 

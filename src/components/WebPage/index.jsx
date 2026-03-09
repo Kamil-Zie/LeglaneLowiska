@@ -4,7 +4,12 @@ import Navbar from './NavBar/navbar';
 const WebPage = () => {
   return (
     <div className="web-page-container">
+<<<<<<< HEAD
+      
+
+=======
       <Navbar />
+>>>>>>> bafc7bf74e3a3da117cf9d837c3b63d5e02a85d9
       {/* Sekcja główna (Hero) */}
       <header className="hero-section">
         <h2>Znajdź legalne miejsce na ryby w Twojej okolicy</h2>
