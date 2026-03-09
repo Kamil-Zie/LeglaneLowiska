@@ -1,7 +1,10 @@
 import './pr0fil.css';
+import Navbar from '../NavBar/navbar';
 
 const Profil = () => {
   return (
+    <>
+    <Navbar />
     <div className="web-page-container">
       <div className="profil-wrapper">
         <div className="profil-card">
@@ -39,6 +42,7 @@ const Profil = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

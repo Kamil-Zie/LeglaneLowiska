@@ -1,3 +1,5 @@
+import Navbar from '../NavBar/navbar'; 
+
 const MojeLowiska = () => {
   const ulubione = [
     { id: 1, nazwa: "Zalew Zegrzyński", opis: "Najlepsze leszcze przy molo.", typ: "PZW" },
@@ -6,6 +8,7 @@ const MojeLowiska = () => {
   ];
 
   return (<>
+      <Navbar />
       <div style={{ padding: '40px' }}>
         <h2>Moje ulubione łowiska</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px', marginTop: '20px' }}>
