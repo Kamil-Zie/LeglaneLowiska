@@ -1,12 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import './mapy.css';
+import Navbar from '../NavBar/navbar'; 
 
 const Mapy = () => {
   return (
     <div className="web-page-container">
+<<<<<<< HEAD
       {/* TWOJA NAWIGACJA - IDENTYCZNA JAK NA GŁÓWNEJ */}
     
+=======
+      <Navbar />
+>>>>>>> bafc7bf74e3a3da117cf9d837c3b63d5e02a85d9
 
       {/* UKŁAD MAPY - ZACZYNA SIĘ POD PASKIEM */}
       <div className="map-layout">
