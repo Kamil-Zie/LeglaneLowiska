@@ -21,6 +21,7 @@ const ProtectedRoute = ({ children }) => {
 function App() {
   return (
     <BrowserRouter>
+      <AuthProvider>
       <Routes>
         <Route path="/" element={<WebPage />} />
         <Route path="/signup" element={<SignUp />} />
