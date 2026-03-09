@@ -1,11 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = process.env.PORT || 3000;
 
 //Env variables
 const dotenv = require('dotenv');
 dotenv.config();
+
+//API Port
+const port = process.env.PORT || 3000;
 
 //MongoDB connection
 const mongoose = require('mongoose');
@@ -21,15 +23,18 @@ db.once('open', () => {
 });
 
 //Cors configuration
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('Legalne Lowiska Backend is running!');
 });
 
-app.use('/api/users/signin', require('./routes/users/signin'));
-app.use('/api/users/signup', require('./routes/users/singup'));
+app.use('/api/users/signin', require('./routes/users/readUser'));
+app.use('/api/users/signup', require('./routes/users/createUser'));
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
