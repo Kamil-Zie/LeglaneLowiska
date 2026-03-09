@@ -5,7 +5,6 @@ const Mapy = () => {
   return (
     <div className="web-page-container">
       <Navbar />
-
       {/* UKŁAD MAPY - ZACZYNA SIĘ POD PASKIEM */}
       <div className="map-layout">
         <aside className="map-sidebar">
