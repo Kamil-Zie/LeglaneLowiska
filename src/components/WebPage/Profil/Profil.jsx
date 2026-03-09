@@ -6,35 +6,7 @@ const Profil = () => {
   return (
     <div className="web-page-container">
       {/* NAWIGACJA */}
-      <nav className="navbar">
-        <img src="logo.svg" alt="Logo" style={{ width: '60px', marginBottom: '15px' }} />
-        <ul className="nav-links">
-            <li>
-                                  <Link to="/mapy" style={{ color: 'inherit', textDecoration: 'none' }}>
-                                   Mapa
-                                  </Link>
-                                  </li>
-                      
-                                  <li>
-                                  <Link to="/mojelowiska" style={{ color: 'inherit', textDecoration: 'none' }}>
-                                   Moje łowiska
-                                  </Link>
-                                  </li>
-                      
-                                  <li>
-                                  <Link to="/profil" style={{ color: 'inherit', textDecoration: 'none' }}>
-                                   Profil
-                                  </Link>
-                                  </li>
-            
-                                  <li>
-                                  <Link to="/Webpage" style={{ color: 'inherit', textDecoration: 'none' }}>
-                                   Strona Główna
-                                  </Link>
-                                  </li>
-        </ul>
-      </nav>
-
+      
       {/* GŁÓWNA TREŚĆ PROFILU */}
       <div className="profil-wrapper">
         <div className="profil-card">
