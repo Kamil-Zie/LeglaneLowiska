@@ -5,19 +5,41 @@ import WebPage from './components/WebPage';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Mapy from './components/WebPage/Mapy/mapy';
 import MojeLowiska from './components/WebPage/Mojelowiska/mojelowiska';
-import Profil from './components/WebPage/Profil/Profil';  
+import Profil from './components/WebPage/Profil/Profil'; 
+import { AuthProvider } from './context/AuthContext';
+import { useAuth } from './context/AuthContext';
+import { Navigate } from 'react-router-dom';
+
+const ProtectedRoute = ({ children }) => {
+  const { user } = useAuth();
+  if (!user) {
+    return <Navigate to="/" />;
+  }
+  return children;
+}
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<WebPage />} />
+      <AuthProvider>
+        <Routes>
+        <Route path="/" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/webpage" element={<WebPage/>} />
         <Route path="/mapy" element={<Mapy />} />
-        <Route path="/profil" element={<Profil />} />
-        <Route path="/mojelowiska" element={<MojeLowiska />} />
+        <Route path="/webpage" element={<WebPage />} />
+        <Route path="/profil" element={
+            <ProtectedRoute>
+              <Profil />
+            </ProtectedRoute>
+          } />
+        <Route path="/mojelowiska" element={
+            <ProtectedRoute>
+              <MojeLowiska />
+            </ProtectedRoute>
+          } />
       </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
