@@ -24,7 +24,7 @@ const NavBar = () => {
             </li>
 
             <li>
-            <Link to="/Webpage" style={{ color: 'inherit', textDecoration: 'none' }}>
+            <Link to="/webpage" style={{ color: 'inherit', textDecoration: 'none' }}>
               Strona Główna
             </Link>
           </li>

@@ -4,7 +4,6 @@ import Navbar from '../NavBar/navbar';
 const Mapy = () => {
   return (
     <div className="web-page-container">
-      {/* TWOJA NAWIGACJA - IDENTYCZNA JAK NA GŁÓWNEJ */}
       <Navbar />
 
       {/* UKŁAD MAPY - ZACZYNA SIĘ POD PASKIEM */}

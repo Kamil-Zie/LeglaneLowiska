@@ -4,7 +4,6 @@ import Navbar from '../NavBar/navbar';
 const Profil = () => {
   return (
     <div className="web-page-container">
-      {/* NAWIGACJA */}
       <Navbar />
 
       {/* GŁÓWNA TREŚĆ PROFILU */}
