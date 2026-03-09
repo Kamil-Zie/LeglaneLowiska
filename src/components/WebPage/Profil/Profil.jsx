@@ -1,0 +1,78 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './pr0fil.css';
+
+const Profil = () => {
+  return (
+    <div className="web-page-container">
+      {/* NAWIGACJA */}
+      <nav className="navbar">
+        <img src="logo.svg" alt="Logo" style={{ width: '60px', marginBottom: '15px' }} />
+        <ul className="nav-links">
+            <li>
+                                  <Link to="/mapy" style={{ color: 'inherit', textDecoration: 'none' }}>
+                                   Mapa
+                                  </Link>
+                                  </li>
+                      
+                                  <li>
+                                  <Link to="/mojelowiska" style={{ color: 'inherit', textDecoration: 'none' }}>
+                                   Moje łowiska
+                                  </Link>
+                                  </li>
+                      
+                                  <li>
+                                  <Link to="/profil" style={{ color: 'inherit', textDecoration: 'none' }}>
+                                   Profil
+                                  </Link>
+                                  </li>
+            
+                                  <li>
+                                  <Link to="/Webpage" style={{ color: 'inherit', textDecoration: 'none' }}>
+                                   Strona Główna
+                                  </Link>
+                                  </li>
+        </ul>
+      </nav>
+
+      {/* GŁÓWNA TREŚĆ PROFILU */}
+      <div className="profil-wrapper">
+        <div className="profil-card">
+          
+          <div className="profil-header">
+            <div className="avatar-placeholder">👤</div>
+            <h2>Kamil Wędkarz</h2>
+            <p>Pasjonat Spinningu</p>
+          </div>
+
+          <div className="profil-body">
+            <div className="info-item">
+              <span className="info-label">Email:</span>
+              <span className="info-value">kamil@lowiska.pl</span>
+            </div>
+
+            <div className="info-item">
+              <span className="info-label">Nr Karty PZW:</span>
+              <span className="info-value">WA/123/456/2024</span>
+            </div>
+
+            <div className="info-item">
+              <span className="info-label">Moje Punkty:</span>
+              <span className="info-value">⭐ 150 pkt</span>
+            </div>
+
+            <div className="info-item">
+              <span className="info-label">Lokalizacja:</span>
+              <span className="info-value">Warszawa</span>
+            </div>
+
+            <button className="btn-logout">Wyloguj się</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Profil;
