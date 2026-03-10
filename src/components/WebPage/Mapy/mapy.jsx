@@ -1,7 +1,34 @@
 import './mapy.css';
 import Navbar from '../NavBar/navbar'; 
+import mapboxgl from 'mapbox-gl';
+import { useEffect, useState, useRef } from 'react';
 
 const Mapy = () => {
+  const mapRef = useRef();
+  const mapContainerRef = useRef();
+  useEffect(() => {
+    mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
+    mapRef.current = new mapboxgl.Map({
+      container: mapContainerRef.current,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [19.944, 50.064], // Przykładowe współrzędne (Warszawa)
+      zoom: 10
+    });
+    return () => mapRef.current.remove();
+  }, [])
+
+  useEffect(() => {
+      if(!"geolocation" in navigator) {
+        console.log("Brak geolokalizacji");
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(position => {
+        const { latitude, longitude } = position.coords;
+        mapRef.current.setCenter([longitude, latitude]);
+      }, error => {
+        console.error("Błąd geolokalizacji:", error);
+      });
+    }, []);
   return (
     <div className="web-page-container">
       {/* TWOJA NAWIGACJA - IDENTYCZNA JAK NA GŁÓWNEJ */}
@@ -26,10 +53,7 @@ const Mapy = () => {
         </aside>
 
         <main className="map-viewer">
-          {/* Tu będzie Twoja mapa */}
-          <div className="map-placeholder">
-             <p>Interaktywna mapa wczytywanie...</p>
-          </div>
+          <div id='map-container' ref={mapContainerRef} style={{ width: '100%', height: '100%' }}></div>
           <button className="map-floating-btn">+</button>
         </main>
       </div>
