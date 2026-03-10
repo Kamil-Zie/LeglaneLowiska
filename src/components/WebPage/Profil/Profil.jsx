@@ -1,16 +1,13 @@
-<<<<<<< HEAD
 import React from 'react';
 import Navbar from '../NavBar/navbar';
 import './pr0fil.css';
 import wedkarz from './wedkarz.jpg';
-=======
 import Navbar from '../NavBar/navbar';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import axios from '../../../api/axios';
 import '../Webpage.css';
 
->>>>>>> c5a21862b32b0d887ec4fa1f0f01d8b5765793c6
 const Profil = () => {
   const { user } = useAuth();
   const [userData, setUserData] = useState();
@@ -31,14 +28,12 @@ const Profil = () => {
     fetchUserData();
   }, []);
   return (
-<<<<<<< HEAD
     <div className="profil-container">
       <Navbar />
       
       <main className="profil-card">
         <div className="avatar-wrapper">
           <img src={wedkarz} alt="Wujek Wędkarz" className="avatar-img" />
-=======
     <>
     <Navbar />
       <div className="web-page-container">
@@ -67,8 +62,7 @@ const Profil = () => {
               <span className="info-value">{userData?.lokalizacja || "Brak danych"}</span>
             </div>
           </div>
->>>>>>> c5a21862b32b0d887ec4fa1f0f01d8b5765793c6
-        </div>
+      </div>
         
         <h1 className="user-name">Wujek Wędkarz</h1>
         <span className="user-title">Karpiarz</span>
