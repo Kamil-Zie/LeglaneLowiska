@@ -26,7 +26,7 @@ const SignComponent = ({SignType}) => {
                 {SignType === "Sign Up" && (
                     <TextField label="Confirm Password" variant="outlined" fullWidth margin="normal" type="password" onChange={(e) => setConfirmPassword(e.target.value)}/>
                 )}
-                <Button variant="contained" color="primary" fullWidth onClick={async (e) => {
+                <Button variant="contained" color="primary" fullWidth onClick={async () => {
                     if(SignType === "Sign In" ) {
                         try {
                             await signIn(email, password);
