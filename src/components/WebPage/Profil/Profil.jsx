@@ -1,44 +1,57 @@
 import './pr0fil.css';
 import Navbar from '../NavBar/navbar';
+import { useState, useEffect } from 'react';
+import { useAuth } from '../../../context/AuthContext';
+import axios from '../../../api/axios';
 
 const Profil = () => {
+  const { user } = useAuth();
+  const [userData, setUserData] = useState();
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`/users/${user._id}`, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          withCredentials: true
+        });
+        setUserData(response.data.user);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUserData();
+  }, []);
   return (
     <>
     <Navbar />
-    <div className="web-page-container">
+      <div className="web-page-container">
       <div className="profil-wrapper">
         <div className="profil-card">
-          
           <div className="profil-header">
             <div className="avatar-placeholder">👤</div>
-            <h2>Kamil Wędkarz</h2>
-            <p>Pasjonat Spinningu</p>
+            <h2>{userData?.nazwa || "Brak nazwy"}</h2>
+            <p>{userData?.opis || "Brak opisu"}</p>
           </div>
-
           <div className="profil-body">
             <div className="info-item">
               <span className="info-label">Email:</span>
-              <span className="info-value">kamil@lowiska.pl</span>
+              <span className="info-value">{userData?.email}</span>
             </div>
-
             <div className="info-item">
               <span className="info-label">Nr Karty PZW:</span>
-              <span className="info-value">WA/123/456/2024</span>
+              <span className="info-value">{userData?.nrKartyPZW || "Brak danych"}</span>
             </div>
-
             <div className="info-item">
               <span className="info-label">Moje Punkty:</span>
-              <span className="info-value">⭐ 150 pkt</span>
+              <span className="info-value">⭐ {userData?.punkty || 0} pkt</span>
             </div>
-
             <div className="info-item">
               <span className="info-label">Lokalizacja:</span>
-              <span className="info-value">Warszawa</span>
+              <span className="info-value">{userData?.lokalizacja || "Brak danych"}</span>
             </div>
-
-            <button className="btn-logout">Wyloguj się</button>
           </div>
-
         </div>
       </div>
     </div>
