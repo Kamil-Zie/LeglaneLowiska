@@ -1,11 +1,8 @@
-<<<<<<< HEAD
-// 1. Wszystkie importy zawsze NA GÓRZE
 import React from 'react';
 import Navbar from '../NavBar/navbar';
 import './mojelowiska.css';
-=======
+
 import Navbar from '../NavBar/navbar'; 
->>>>>>> c5a21862b32b0d887ec4fa1f0f01d8b5765793c6
 
 const MojeLowiska = () => {
   const lowiska = [
@@ -21,13 +18,10 @@ const MojeLowiska = () => {
   { id: 10, nazwa: "Rzeka Odra (Szczecin)", woj: "Zachodniopomorskie", opis: "Miejskie łowienie w porcie. Wielkie sandacze i okonie prosto z nabrzeża.", ocena: "⭐⭐⭐⭐" }
 ];
 
-<<<<<<< HEAD
   return (
     <>
-=======
   return (<>
->>>>>>> c5a21862b32b0d887ec4fa1f0f01d8b5765793c6
-      <Navbar />
+    <Navbar />
       <div className="lowiska-container">
         <h2 className="section-title">Moje ulubione łowiska</h2>
         <div className="lowiska-grid">
@@ -42,11 +36,10 @@ const MojeLowiska = () => {
           ))}
         </div>
       </div>
-<<<<<<< HEAD
     </>
-=======
+
   </>
->>>>>>> c5a21862b32b0d887ec4fa1f0f01d8b5765793c6
+ 
   );
 };
 
