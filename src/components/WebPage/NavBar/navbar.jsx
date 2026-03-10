@@ -2,6 +2,7 @@ import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import {useNavigate} from 'react-router-dom';
+import './navbar.css';
 
 const NavBar = () => {
   const { signOut } = useAuth();
@@ -34,7 +35,7 @@ const NavBar = () => {
             </Link>
           </li>
           <li>
-            <Button variant="contained" color="secondary" style={{ marginLeft: '20px' }} onClick={async() => {
+            <Button variant="contained" color="secondary" style={{ marginLeft: '20px' }} onClick={async () => {
               await signOut();
               navigate('/');
             }}>
