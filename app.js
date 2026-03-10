@@ -6,6 +6,10 @@ const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
 
+//Cookies
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
 //API Port
 const port = process.env.PORT || 3000;
 
@@ -33,8 +37,11 @@ app.get('/', (req, res) => {
   res.send('Legalne Lowiska Backend is running!');
 });
 
+app.use('/api/users', require('./routes/users/readUser'));
 app.use('/api/users/signin', require('./routes/users/readUser'));
 app.use('/api/users/signup', require('./routes/users/createUser'));
+app.use('/api/users/signout', require('./routes/users/clearUser'));
+app.use('/api/lowiska', require('./routes/fishery/readFishery'));
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
