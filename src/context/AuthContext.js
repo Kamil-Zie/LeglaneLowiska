@@ -29,9 +29,14 @@ export const AuthProvider = ({ children }) => {
     };
 
 
-    const signOut = () => {
-        // Tu warto dodać endpoint na backendzie do czyszczenia ciasteczka
-        setUser(null);
+    const signOut = async () => {
+        try {
+            await axios.post('/users/signout');
+            setUser(null);
+            localStorage.removeItem('LegalneLowiskaToken');
+        } catch (error) {
+            throw error;
+        }
     };
 
     return (
