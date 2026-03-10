@@ -1,52 +1,43 @@
-import './pr0fil.css';
+import React from 'react';
 import Navbar from '../NavBar/navbar';
-
+import './pr0fil.css';
+import wedkarz from './wedkarz.jpg';
 const Profil = () => {
   return (
-    <div className="web-page-container">
-<<<<<<< HEAD
-      {/* NAWIGACJA */}
-      
-=======
+    <div className="profil-container">
       <Navbar />
-
->>>>>>> bafc7bf74e3a3da117cf9d837c3b63d5e02a85d9
-      {/* GŁÓWNA TREŚĆ PROFILU */}
-      <div className="profil-wrapper">
-        <div className="profil-card">
-          
-          <div className="profil-header">
-            <div className="avatar-placeholder">👤</div>
-            <h2>Kamil Wędkarz</h2>
-            <p>Pasjonat Spinningu</p>
-          </div>
-
-          <div className="profil-body">
-            <div className="info-item">
-              <span className="info-label">Email:</span>
-              <span className="info-value">kamil@lowiska.pl</span>
-            </div>
-
-            <div className="info-item">
-              <span className="info-label">Nr Karty PZW:</span>
-              <span className="info-value">WA/123/456/2024</span>
-            </div>
-
-            <div className="info-item">
-              <span className="info-label">Moje Punkty:</span>
-              <span className="info-value">⭐ 150 pkt</span>
-            </div>
-
-            <div className="info-item">
-              <span className="info-label">Lokalizacja:</span>
-              <span className="info-value">Warszawa</span>
-            </div>
-
-            <button className="btn-logout">Wyloguj się</button>
-          </div>
-
+      
+      <main className="profil-card">
+        <div className="avatar-wrapper">
+          <img src={wedkarz} alt="Wujek Wędkarz" className="avatar-img" />
         </div>
-      </div>
+        
+        <h1 className="user-name">Wujek Wędkarz</h1>
+        <span className="user-title">Karpiarz</span>
+        
+        <p className="user-bio">
+          SYNEK, NA WODZIE TO SIĘ PRAWDZIWE OKAZY ŁAPIE! TAM JEST ŻYWIOŁ!
+        </p>
+
+        <div className="badge-list">
+          <span className="skill-badge">PZW Member</span>
+        </div>
+
+        <section className="stats-grid">
+          <div className="stat-box">
+            <span className="stat-value">124</span>
+            <span className="stat-label">Wyprawy</span>
+          </div>
+          <div className="stat-box">
+            <span className="stat-value">84 cm</span>
+            <span className="stat-label">Rekord</span>
+          </div>
+          <div className="stat-box">
+            <span className="stat-value">12</span>
+            <span className="stat-label">Łowisk</span>
+          </div>
+        </section>
+      </main>
     </div>
   );
 };

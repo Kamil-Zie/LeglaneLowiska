@@ -10,7 +10,6 @@ import Navbar from './components/WebPage/compoweb/navbar';
 function App() {
   return (
     <BrowserRouter>
-    <Navbar />
       <Routes>
         <Route path="/" element={<WebPage />} />
         <Route path="/signup" element={<SignUp />} />

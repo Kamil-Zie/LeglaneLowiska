@@ -1,45 +1,38 @@
+import React from 'react';
+import Navbar from '../NavBar/navbar';
 import './mapy.css';
-import Navbar from '../NavBar/navbar'; 
 
-const Mapy = () => {
+
+import mapaprzyklad from './mapaprzyklad.png'; 
+
+const Mapa = () => {
   return (
-    <div className="web-page-container">
-<<<<<<< HEAD
-      {/* TWOJA NAWIGACJA - IDENTYCZNA JAK NA GŁÓWNEJ */}
-    
-=======
+    <>
       <Navbar />
->>>>>>> bafc7bf74e3a3da117cf9d837c3b63d5e02a85d9
+      {/* problem */}
+      <div className="mapa-page-container">
+        <h2 className="mapa-title">Interaktywna Mapa Łowisk Wujka Kamila</h2>
+        
+        <div className="mapa-wrapper">
+          <img src={mapaprzyklad} className="mapa-image" />
+          {/* Pinezki zostawiamy bez zmian, będą się wyświetlać na Twoim zdjęciu */}
+          <div className="pin" style={{ top: '30%', left: '45%' }}>
+            <span className="pin-icon">🎣</span>
+            <div className="pin-tooltip">Zalew Zegrzyński</div>
+          </div>
 
-      {/* UKŁAD MAPY - ZACZYNA SIĘ POD PASKIEM */}
-      <div className="map-layout">
-        <aside className="map-sidebar">
-          <div className="sidebar-header">
-            <h3>Znajdź łowisko</h3>
-            <div className="search-box-mini">
-               <input type="text" placeholder="Szukaj..." />
-               <button>🔍</button>
-            </div>
+          <div className="pin" style={{ top: '60%', left: '70%' }}>
+            <span className="pin-icon">🎣</span>
+            <div className="pin-tooltip">Wisła - Odcinek 402</div>
           </div>
-          <div className="results-list">
-            <div className="map-spot-card">
-              <h4>Zalew Zegrzyński</h4>
-              <p>20km od Ciebie</p>
-            </div>
-            {/* ... reszta kart ... */}
-          </div>
-        </aside>
+        </div>
 
-        <main className="map-viewer">
-          {/* Tu będzie Twoja mapa */}
-          <div className="map-placeholder">
-             <p>Interaktywna mapa wczytywanie...</p>
-          </div>
-          <button className="map-floating-btn">+</button>
-        </main>
+        <div className="mapa-legend">
+          <p>💡 Kliknij w pinezkę na mapie, aby zobaczyć szczegóły łowiska.</p>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default Mapy;
+export default Mapa;
