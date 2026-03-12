@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import axios from '../../../api/axios';
 import { TextField } from '@mui/material';
 import { useDebounce } from '../../../hooks/useDebounce';
-import '../Webpage.css';
+import '../WebPage.css';
 
 const Mapy = () => {
   const mapRef = useRef();
@@ -111,7 +111,7 @@ const Mapy = () => {
                <button>🔍</button>
             </div>
           </div>
-          {/* <div className="results-list" style={{overflowY: 'auto', maxHeight: '400px', display: 'flex', flexDirection: 'row', gap: '10px'}}>
+          <div className="results-list" style={{overflowY: 'auto', maxHeight: '400px', display: 'flex', flexDirection: 'row', gap: '10px'}}>
             {
                 lowiska?.map(lowisko => (
                   <div key={lowisko._id} className="result-item">
@@ -122,7 +122,7 @@ const Mapy = () => {
                   </div>
                 ))
             }
-          </div> */}
+          </div>
         </aside>
 
         <div className="map-viewer" style={{height:'50vh'}}>
