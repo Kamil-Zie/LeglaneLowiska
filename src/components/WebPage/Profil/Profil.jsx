@@ -2,7 +2,7 @@ import Navbar from '../NavBar/navbar';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import axios from '../../../api/axios';
-import '../Webpage.css';
+import '../WebPage.css';
 
 const Profil = () => {
   const { user } = useAuth();
