@@ -2,7 +2,6 @@ import React from 'react';
 import Navbar from '../NavBar/navbar';
 import './mojelowiska.css';
 
-import Navbar from '../NavBar/navbar'; 
 import '../WebPage.css';
 
 const MojeLowiska = () => {

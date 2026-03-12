@@ -6,7 +6,7 @@ import { TextField } from '@mui/material';
 import { useDebounce } from '../../../hooks/useDebounce';
 import '../WebPage.css';
 
-const Mapy = () => {
+const Mapa = () => {
   const mapRef = useRef();
   const mapContainerRef = useRef();
   const [lowiska, setLowiska] = useState([]);

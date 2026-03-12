@@ -2,7 +2,6 @@ import React from 'react';
 import Navbar from '../NavBar/navbar';
 import './pr0fil.css';
 import wedkarz from './wedkarz.jpg';
-import Navbar from '../NavBar/navbar';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import axios from '../../../api/axios';
