@@ -1,4 +1,5 @@
 import Navbar from '../NavBar/navbar'; 
+import '../WebPage.css';
 
 const MojeLowiska = () => {
   const ulubione = [
