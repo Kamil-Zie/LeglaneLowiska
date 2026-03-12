@@ -1,36 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-import Navbar from '../NavBar/navbar';
-import './mapy.css';
-
-
-import mapaprzyklad from './mapaprzyklad.png'; 
-
-const Mapa = () => {
-  return (
-    <>
-      <Navbar />
-      {/* problem */}
-      <div className="mapa-page-container">
-        <h2 className="mapa-title">Interaktywna Mapa Łowisk Wujka Kamila</h2>
-        
-        <div className="mapa-wrapper">
-          <img src={mapaprzyklad} className="mapa-image" />
-          {/* Pinezki zostawiamy bez zmian, będą się wyświetlać na Twoim zdjęciu */}
-          <div className="pin" style={{ top: '30%', left: '45%' }}>
-            <span className="pin-icon">🎣</span>
-            <div className="pin-tooltip">Zalew Zegrzyński</div>
-          </div>
-
-          <div className="pin" style={{ top: '60%', left: '70%' }}>
-            <span className="pin-icon">🎣</span>
-            <div className="pin-tooltip">Wisła - Odcinek 402</div>
-          </div>
-        </div>
-
-        <div className="mapa-legend">
-          <p>💡 Kliknij w pinezkę na mapie, aby zobaczyć szczegóły łowiska.</p>
-=======
 import Navbar from '../NavBar/navbar'; 
 import mapboxgl from 'mapbox-gl';
 import { useEffect, useState, useRef } from 'react';
@@ -160,10 +127,9 @@ const Mapy = () => {
 
         <div className="map-viewer" style={{height:'50vh'}}>
           <div id='map-container' ref={mapContainerRef}></div>
->>>>>>> c5a21862b32b0d887ec4fa1f0f01d8b5765793c6
         </div>
       </div>
-    </>
+      </div>
   );
 };
 

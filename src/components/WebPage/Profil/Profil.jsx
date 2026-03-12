@@ -28,12 +28,6 @@ const Profil = () => {
     fetchUserData();
   }, []);
   return (
-    <div className="profil-container">
-      <Navbar />
-      
-      <main className="profil-card">
-        <div className="avatar-wrapper">
-          <img src={wedkarz} alt="Wujek Wędkarz" className="avatar-img" />
     <>
     <Navbar />
       <div className="web-page-container">
@@ -89,7 +83,7 @@ const Profil = () => {
             <span className="stat-label">Łowisk</span>
           </div>
         </section>
-      </main>
+        </div>
     </div>
     </>
   );
