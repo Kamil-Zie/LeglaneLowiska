@@ -1,0 +1,96 @@
+/* Mapa.css */
+
+.mapa-page-container {
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.mapa-title {
+  color: #1b5e20; /* Wędkarska zieleń */
+  margin-bottom: 30px;
+  font-size: 28px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Kontener na zdjęcie mapy i pinezki */
+.mapa-wrapper {
+  position: relative; /* KLUCZOWE: pozwala pinezkom "leżeć" na mapie */
+  display: inline-block; /* Dopasowuje się do rozmiaru zdjęcia */
+  border: 10px solid #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+  overflow: hidden; /* Żeby zdjęcie nie wystawało poza zaokrąglone rogi */
+  background-color: #e0e0e0;
+}
+
+.mapa-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  /* Opcjonalny filtr, by mapa wyglądała bardziej jak terenowa */
+  filter: contrast(1.1) saturate(1.1);
+}
+
+/* Styl samej pinezki */
+.pin {
+  position: absolute; /* Ustawiamy pinezkę w konkretnym punkcie zdjęcia */
+  cursor: pointer;
+  z-index: 5;
+  transition: transform 0.2s ease-in-out;
+}
+
+.pin:hover {
+  transform: scale(1.4); /* Powiększenie przy najechaniu */
+  z-index: 10;
+}
+
+.pin-icon {
+  font-size: 35px;
+  filter: drop-shadow(0 4px 5px rgba(0,0,0,0.4));
+  display: block;
+}
+
+/* Dymek (Tooltip) z nazwą łowiska */
+.pin-tooltip {
+  visibility: hidden;
+  opacity: 0;
+  background-color: rgba(27, 94, 32, 0.9); /* Zielone tło dymka */
+  color: white;
+  text-align: center;
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  
+  /* Pozycjonowanie dymka nad pinezką */
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  
+  transition: opacity 0.3s, visibility 0.3s;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Pokazujemy dymek po najechaniu na pinezkę */
+.pin:hover .pin-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Mały dziubek pod dymkiem */
+.pin-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(27, 94, 32, 0.9) transparent transparent transparent;
+}

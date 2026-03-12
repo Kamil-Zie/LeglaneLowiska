@@ -1,0 +1,72 @@
+/* mojelowiska.css */
+
+.lowiska-container {
+  padding: 40px 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.section-title {
+  text-align: center;
+  color:#1a5275; /* Ciemna, wędkarska zieleń */
+  font-size: 32px;
+  margin-bottom: 40px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Siatka układająca prostokąty obok siebie */
+.lowiska-grid {
+  display: grid;
+  /* Tworzy kolumny, które same dostosowują się do szerokości ekranu */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+/* Styl pojedynczego prostokąta (karty) */
+.lowisko-card {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-left: 8px solid #1a5275; /* Zielony pasek z boku */
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Efekt po najechaniu myszką */
+.lowisko-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  border-left-color: #0d293a;
+}
+
+.lowisko-card h3 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 22px;
+}
+
+.wojewodztwo {
+  font-size: 13px;
+  color: #666;
+  font-weight: 600;
+  margin-bottom: 15px;
+  display: block;
+  background: #cfe1ec;
+  padding: 4px 10px;
+  border-radius: 5px;
+  width: fit-content;
+}
+
+.opis {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  flex-grow: 1; /* Sprawia, że stopka zawsze jest na dole, nawet przy krótkim opisie */
+}
