@@ -1,12 +1,11 @@
 import React from 'react';
-import Navbar from '../NavBar/navbar';
 import './pr0fil.css';
-import wedkarz from './wedkarz.jpg';
 import Navbar from '../NavBar/navbar';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import axios from '../../../api/axios';
-import '../Webpage.css';
+import '../WebPage.css';
+import Avatar from '@mui/material/Avatar';
 
 const Profil = () => {
   const { user } = useAuth();
@@ -28,48 +27,43 @@ const Profil = () => {
     fetchUserData();
   }, []);
   return (
-    <div className="profil-container">
-      <Navbar />
-      
-      <main className="profil-card">
-        <div className="avatar-wrapper">
-          <img src={wedkarz} alt="Wujek Wędkarz" className="avatar-img" />
     <>
     <Navbar />
       <div className="web-page-container">
       <div className="profil-wrapper">
         <div className="profil-card">
           <div className="profil-header">
-            <div className="avatar-placeholder">👤</div>
+            <div className="avatar-placeholder">
+              <Avatar sx={{ bgcolor: '#1a5275', width: 150, height: 150, fontSize: 60 }}>
+                {userData?.nazwa?.charAt(0) || "B"}
+              </Avatar>
+            </div>
+          </div>
+          <div className="profil-name">
             <h2>{userData?.nazwa || "Brak nazwy"}</h2>
-            <p>{userData?.opis || "Brak opisu"}</p>
+            </div>
+          <div className="profil-description">
+          <p>{userData?.opis || "Brak opisu"}</p>
           </div>
           <div className="profil-body">
             <div className="info-item">
-              <span className="info-label">Email:</span>
-              <span className="info-value">{userData?.email}</span>
+              <span className="info-label"><b>Email: </b></span>
+              <span className="info-value">{userData?.email || "Brak danych"}</span>
             </div>
             <div className="info-item">
-              <span className="info-label">Nr Karty PZW:</span>
+              <span className="info-label"><b>Nr Karty PZW: </b></span>
               <span className="info-value">{userData?.nrKartyPZW || "Brak danych"}</span>
             </div>
             <div className="info-item">
-              <span className="info-label">Moje Punkty:</span>
+              <span className="info-label"><b>Moje Punkty: </b></span>
               <span className="info-value">⭐ {userData?.punkty || 0} pkt</span>
             </div>
             <div className="info-item">
-              <span className="info-label">Lokalizacja:</span>
+              <span className="info-label"><b>Lokalizacja: </b></span>
               <span className="info-value">{userData?.lokalizacja || "Brak danych"}</span>
             </div>
           </div>
       </div>
-        
-        <h1 className="user-name">Wujek Wędkarz</h1>
-        <span className="user-title">Karpiarz</span>
-        
-        <p className="user-bio">
-          SYNEK, NA WODZIE TO SIĘ PRAWDZIWE OKAZY ŁAPIE! TAM JEST ŻYWIOŁ!
-        </p>
 
         <div className="badge-list">
           <span className="skill-badge">PZW Member</span>
@@ -77,19 +71,19 @@ const Profil = () => {
 
         <section className="stats-grid">
           <div className="stat-box">
-            <span className="stat-value">124</span>
+            <span className="stat-value">Brak</span>
             <span className="stat-label">Wyprawy</span>
           </div>
           <div className="stat-box">
-            <span className="stat-value">84 cm</span>
+            <span className="stat-value">Brak</span>
             <span className="stat-label">Rekord</span>
           </div>
           <div className="stat-box">
-            <span className="stat-value">12</span>
+            <span className="stat-value">Brak</span>
             <span className="stat-label">Łowisk</span>
           </div>
         </section>
-      </main>
+      </div>
     </div>
     </>
   );

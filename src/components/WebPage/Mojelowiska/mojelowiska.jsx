@@ -2,8 +2,6 @@ import React from 'react';
 import Navbar from '../NavBar/navbar';
 import './mojelowiska.css';
 
-import Navbar from '../NavBar/navbar'; 
-
 const MojeLowiska = () => {
   const lowiska = [
   { id: 1, nazwa: "Zalew Zegrzyński", woj: "Mazowieckie", opis: "Królestwo sandacza i leszcza. Najlepiej brać łódkę przy porcie w Nieporęcie.", ocena: "⭐⭐⭐⭐⭐" },
@@ -20,7 +18,7 @@ const MojeLowiska = () => {
 
   return (
     <>
-  return (<>
+  
     <Navbar />
       <div className="lowiska-container">
         <h2 className="section-title">Moje ulubione łowiska</h2>
@@ -38,7 +36,7 @@ const MojeLowiska = () => {
       </div>
     </>
 
-  </>
+  
  
   );
 };

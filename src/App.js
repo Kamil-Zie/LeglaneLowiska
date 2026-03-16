@@ -9,6 +9,8 @@ import Profil from './components/WebPage/Profil/Profil';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './context/AuthContext';
 import { Navigate } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
@@ -18,40 +20,37 @@ const ProtectedRoute = ({ children }) => {
   return children;
 }
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#1a5275',
+    },
+    secondary: {
+      main: '#102f42',
+    },
+    third: {
+      main: '#8d9faa',
+    },
+  },
+});
+
 function App() {
   return (
+    <ThemeProvider theme={theme}>
     <BrowserRouter>
-<<<<<<< HEAD
-=======
       <AuthProvider>
->>>>>>> c5a21862b32b0d887ec4fa1f0f01d8b5765793c6
       <Routes>
-        <Route path="/" element={<SignIn />} />
+        <Route path="/" element={<WebPage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/webpage" element={<WebPage/>} />
-        <Route path="/mapy" element={
-            <ProtectedRoute>
-              <Mapy />
-            </ProtectedRoute>
-          } />
-        <Route path="/webpage" element={
-            <ProtectedRoute>
-              <WebPage />
-            </ProtectedRoute>
-        } />
-        <Route path="/profil" element={
-            <ProtectedRoute>
-              <Profil />
-            </ProtectedRoute>
-          } />
-        <Route path="/mojelowiska" element={
-            <ProtectedRoute>
-              <MojeLowiska />
-            </ProtectedRoute>
-          } />
+        <Route path="/mapy" element={<Mapy />} />
+        <Route path="/profil" element={<Profil />} />
+        <Route path="/mojelowiska" element={<MojeLowiska />} />
+        
       </Routes>
       </AuthProvider>
     </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

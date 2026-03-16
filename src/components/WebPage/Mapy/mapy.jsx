@@ -1,45 +1,13 @@
-<<<<<<< HEAD
-import React from 'react';
-import Navbar from '../NavBar/navbar';
-import './mapy.css';
-
-
-import mapaprzyklad from './mapaprzyklad.png'; 
-
-const Mapa = () => {
-  return (
-    <>
-      <Navbar />
-      {/* problem */}
-      <div className="mapa-page-container">
-        <h2 className="mapa-title">Interaktywna Mapa Łowisk Wujka Kamila</h2>
-        
-        <div className="mapa-wrapper">
-          <img src={mapaprzyklad} className="mapa-image" />
-          {/* Pinezki zostawiamy bez zmian, będą się wyświetlać na Twoim zdjęciu */}
-          <div className="pin" style={{ top: '30%', left: '45%' }}>
-            <span className="pin-icon">🎣</span>
-            <div className="pin-tooltip">Zalew Zegrzyński</div>
-          </div>
-
-          <div className="pin" style={{ top: '60%', left: '70%' }}>
-            <span className="pin-icon">🎣</span>
-            <div className="pin-tooltip">Wisła - Odcinek 402</div>
-          </div>
-        </div>
-
-        <div className="mapa-legend">
-          <p>💡 Kliknij w pinezkę na mapie, aby zobaczyć szczegóły łowiska.</p>
-=======
 import Navbar from '../NavBar/navbar'; 
 import mapboxgl from 'mapbox-gl';
 import { useEffect, useState, useRef } from 'react';
 import axios from '../../../api/axios';
 import { TextField } from '@mui/material';
 import { useDebounce } from '../../../hooks/useDebounce';
-import '../Webpage.css';
-
-const Mapy = () => {
+import '../WebPage.css';
+import { Button } from '@mui/material';
+import './mapy.css';
+const Mapa = () => {
   const mapRef = useRef();
   const mapContainerRef = useRef();
   const [lowiska, setLowiska] = useState([]);
@@ -137,12 +105,19 @@ const Mapy = () => {
       <Navbar />
       <div className="map-layout">
         <aside className="map-sidebar">
-          <div className="sidebar-header">
-            <h3>Znajdź łowisko</h3>
-            <div className="search-box-mini">
-              <TextField label="Wpisz miasto" variant="outlined" size="small" fullWidth onChange={(e)=>setSearchQuery(e.target.value)}/>
-               <button>🔍</button>
+          <div className="search-group">
+            <div className='search'>
+            <h3 >Znajdź łowisko</h3>
             </div>
+            <div style={{ width: '1920px', height: '5px' }}></div>
+              <div className="search-box-input" color="primary">
+              <TextField label="Wpisz miasto" color="white" variant="outlined" size="small" maxWidth="300px" width="100%" onChange={(e)=>setSearchQuery(e.target.value)}/>
+  </div>
+                <div style={{ width: '1920px', height: '20px' }}></div>
+               <div className="search-box-button">
+               <Button variant="outlined" allaign="center" >Szukaj</Button>
+            </div>
+            <div style={{ width: '1920px', height: '20px' }}></div>
           </div>
           {/* <div className="results-list" style={{overflowY: 'auto', maxHeight: '400px', display: 'flex', flexDirection: 'row', gap: '10px'}}>
             {
@@ -160,10 +135,10 @@ const Mapy = () => {
 
         <div className="map-viewer" style={{height:'50vh'}}>
           <div id='map-container' ref={mapContainerRef}></div>
->>>>>>> c5a21862b32b0d887ec4fa1f0f01d8b5765793c6
         </div>
       </div>
-    </>
+      </div>
+    
   );
 };
 

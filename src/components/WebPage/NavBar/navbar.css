@@ -1,7 +1,5 @@
 
-/* GŁÓWNY KONTENER - Sztywna wysokość to klucz */
-/* --- UNIWERSALNY NAVBAR - NIE ZMIENIAĆ --- */
-/* BLOKADA WYMIARÓW - NAVBAR */
+
 .navbar {
     height: 160px ; /* Sztywna wysokość - nie drgnie */
     background-color: #1a5275 ;
@@ -27,6 +25,7 @@
 
 /* BLOKADA WYMIARÓW - LINKI */
 .nav-links {
+    color: white;
     display: flex ;
     list-style: none ;
     gap: 40px ;
@@ -34,6 +33,7 @@
     margin: 0 ;
     height: 40px ;
     align-items: center ;
+    font-size: 10px ;
 }
 
 .nav-links li a {

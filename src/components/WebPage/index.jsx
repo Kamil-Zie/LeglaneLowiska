@@ -1,5 +1,6 @@
 import './WebPage.css'; 
 import Navbar from './NavBar/navbar';
+import { Button } from '@mui/material';
 
 const WebPage = () => {
   return (
@@ -15,9 +16,7 @@ const WebPage = () => {
             placeholder="Wpisz miasto" 
             className="search-input"
           />
-          <button style={{ padding: '10px 20px', borderRadius: '0 5px 5px 0', border: 'none', background: '#1a5275', color: 'white', cursor: 'pointer' }}>
-            Szukaj
-          </button>
+          <Button variant="contained" color='primary'>Szukaj</Button>
         </div>
       </header>
 
