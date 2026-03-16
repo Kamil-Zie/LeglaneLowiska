@@ -2,6 +2,11 @@ import React from 'react';
 import Navbar from '../NavBar/navbar';
 import './mojelowiska.css';
 
+<<<<<<< HEAD
+=======
+import '../WebPage.css';
+
+>>>>>>> 2891ec758177058383369d94f415fe3147647a9b
 const MojeLowiska = () => {
   const lowiska = [
   { id: 1, nazwa: "Zalew Zegrzyński", woj: "Mazowieckie", opis: "Królestwo sandacza i leszcza. Najlepiej brać łódkę przy porcie w Nieporęcie.", ocena: "⭐⭐⭐⭐⭐" },

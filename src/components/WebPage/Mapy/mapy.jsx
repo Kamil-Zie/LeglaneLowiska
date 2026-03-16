@@ -5,8 +5,12 @@ import axios from '../../../api/axios';
 import { TextField } from '@mui/material';
 import { useDebounce } from '../../../hooks/useDebounce';
 import '../WebPage.css';
+<<<<<<< HEAD
 import { Button } from '@mui/material';
 import './mapy.css';
+=======
+
+>>>>>>> 2891ec758177058383369d94f415fe3147647a9b
 const Mapa = () => {
   const mapRef = useRef();
   const mapContainerRef = useRef();
@@ -119,7 +123,7 @@ const Mapa = () => {
             </div>
             <div style={{ width: '1920px', height: '20px' }}></div>
           </div>
-          {/* <div className="results-list" style={{overflowY: 'auto', maxHeight: '400px', display: 'flex', flexDirection: 'row', gap: '10px'}}>
+          <div className="results-list" style={{overflowY: 'auto', maxHeight: '400px', display: 'flex', flexDirection: 'row', gap: '10px'}}>
             {
                 lowiska?.map(lowisko => (
                   <div key={lowisko._id} className="result-item">
@@ -130,7 +134,7 @@ const Mapa = () => {
                   </div>
                 ))
             }
-          </div> */}
+          </div>
         </aside>
 
         <div className="map-viewer" style={{height:'50vh'}}>
@@ -138,7 +142,10 @@ const Mapa = () => {
         </div>
       </div>
       </div>
+<<<<<<< HEAD
     
+=======
+>>>>>>> 2891ec758177058383369d94f415fe3147647a9b
   );
 };
 

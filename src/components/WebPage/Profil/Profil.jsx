@@ -1,11 +1,18 @@
 import React from 'react';
 import './pr0fil.css';
+<<<<<<< HEAD
 import Navbar from '../NavBar/navbar';
+=======
+import wedkarz from './wedkarz.jpg';
+>>>>>>> 2891ec758177058383369d94f415fe3147647a9b
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import axios from '../../../api/axios';
 import '../WebPage.css';
+<<<<<<< HEAD
 import Avatar from '@mui/material/Avatar';
+=======
+>>>>>>> 2891ec758177058383369d94f415fe3147647a9b
 
 const Profil = () => {
   const { user } = useAuth();
@@ -83,7 +90,11 @@ const Profil = () => {
             <span className="stat-label">Łowisk</span>
           </div>
         </section>
+<<<<<<< HEAD
       </div>
+=======
+        </div>
+>>>>>>> 2891ec758177058383369d94f415fe3147647a9b
     </div>
     </>
   );
