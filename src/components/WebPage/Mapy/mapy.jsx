@@ -5,12 +5,9 @@ import axios from '../../../api/axios';
 import { TextField } from '@mui/material';
 import { useDebounce } from '../../../hooks/useDebounce';
 import '../WebPage.css';
-<<<<<<< HEAD
 import { Button } from '@mui/material';
 import './mapy.css';
-=======
 
->>>>>>> 2891ec758177058383369d94f415fe3147647a9b
 const Mapa = () => {
   const mapRef = useRef();
   const mapContainerRef = useRef();
@@ -142,10 +139,7 @@ const Mapa = () => {
         </div>
       </div>
       </div>
-<<<<<<< HEAD
     
-=======
->>>>>>> 2891ec758177058383369d94f415fe3147647a9b
   );
 };
 
