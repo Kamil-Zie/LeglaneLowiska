@@ -3,9 +3,6 @@ import { useAuth } from '../../../context/AuthContext';
 import {useNavigate} from 'react-router-dom';
 import { Button } from '@mui/material';
 import './navbar.css';
-import React, { useState } from 'react';
-import Stack from '@mui/material/Stack';
-import Alert from '@mui/material/Alert';
 
 const NavBar = () => {
   
