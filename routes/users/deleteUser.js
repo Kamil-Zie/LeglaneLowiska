@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../../models/uzytkownik');
+const {verifyAdminToken} = require('../../utils/JWT_Token')
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verifyAdminToken, async (req, res) => {
     const userId = req.params.id;
     try {
         const deletedUser = await User.findByIdAndDelete(userId);
