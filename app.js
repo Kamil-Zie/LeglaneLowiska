@@ -41,7 +41,9 @@ app.use('/api/users', require('./routes/users/readUser'));
 app.use('/api/users/signin', require('./routes/users/readUser'));
 app.use('/api/users/signup', require('./routes/users/createUser'));
 app.use('/api/users/signout', require('./routes/users/clearUser'));
+app.use('/api/users/update', require('./routes/users/updateUser'))
 app.use('/api/lowiska', require('./routes/fishery/readFishery'));
+app.use('/api/okregi', require('./routes/district/readDistrict'));
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
