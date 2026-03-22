@@ -26,7 +26,6 @@ router.post("/", async (req, res) => {
     newUser.save()
       .then(user =>res.status(201).cookie("LegalneLowiskaToken", accesToken, {maxAge:60*60*24*30*100}).json({ message: "User created successfully", user }))
       .catch(error => res.status(500).json({ error: error }));
-
   });
 });
 
