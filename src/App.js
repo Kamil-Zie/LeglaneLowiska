@@ -40,7 +40,7 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
       <Routes>
-        <Route path="/" element={<SignIn />} />
+        <Route path="/" element={<WebPage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/webpage" element={<WebPage/>} />
         <Route path="/mapy" element={<Mapy />} />
