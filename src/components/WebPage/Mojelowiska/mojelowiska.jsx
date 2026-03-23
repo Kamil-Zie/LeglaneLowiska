@@ -1,21 +1,9 @@
-import React from 'react';
 import Navbar from '../NavBar/navbar';
 import './mojelowiska.css';
-
+import { useAuth } from '../../../context/AuthContext';
 const MojeLowiska = () => {
-  const lowiska = [
-  { id: 1, nazwa: "Zalew Zegrzyński", woj: "Mazowieckie", opis: "Królestwo sandacza i leszcza. Najlepiej brać łódkę przy porcie w Nieporęcie.", ocena: "⭐⭐⭐⭐⭐" },
-  { id: 2, nazwa: "Jezioro Solińskie", woj: "Podkarpackie", opis: "Piękne widoki i wielkie szczupaki. Uważaj na nagłe zmiany pogody!", ocena: "⭐⭐⭐⭐" },
-  { id: 3, nazwa: "Wisła - Odcinek 402", woj: "Mazowieckie", opis: "Dzika rzeka. Szukaj głębokich rynien pod Warszawą, tam czają się sumy.", ocena: "⭐⭐⭐⭐" },
-  { id: 4, nazwa: "Jezioro Śniardwy", woj: "Warmińsko-Mazurskie", opis: "Mazurskie morze. Ogromna przestrzeń, wymagająca, ale darzy pięknym okoniem.", ocena: "⭐⭐⭐⭐⭐" },
-  { id: 5, nazwa: "Rzeka San", woj: "Podkarpackie", opis: "Raj dla muszkarzy. Lipienie i pstrągi w krystalicznej wodzie Bieszczad.", ocena: "⭐⭐⭐⭐⭐" },
-  { id: 6, nazwa: "Jezioro Rożnowskie", woj: "Małopolskie", opis: "Strome brzegi i mętna woda, ale sandacze biorą tu jak nigdzie indziej.", ocena: "⭐⭐⭐" },
-  { id: 7, nazwa: "Kanał Bydgoski", woj: "Kujawsko-Pomorskie", opis: "Spokojna woda, idealna na bata lub tyczkę. Dużo płoci i krąpi.", ocena: "⭐⭐⭐⭐" },
-  { id: 8, nazwa: "Jezioro Turawskie", woj: "Opolskie", opis: "Legendarne miejsce na sandacza. Warto sprawdzić stare koryto rzeki.", ocena: "⭐⭐⭐⭐" },
-  { id: 9, nazwa: "Zatoka Pucka", woj: "Pomorskie", opis: "Belona w maju to tutaj obowiązek każdego spinningisty.", ocena: "⭐⭐⭐⭐⭐" },
-  { id: 10, nazwa: "Rzeka Odra (Szczecin)", woj: "Zachodniopomorskie", opis: "Miejskie łowienie w porcie. Wielkie sandacze i okonie prosto z nabrzeża.", ocena: "⭐⭐⭐⭐" }
-];
-
+  const { user } = useAuth();
+   const lowiska = JSON.parse(localStorage.getItem('lowiska')).filter(lowisko => user.ulubioneLowiska.includes(lowisko._id));
   return (
     <>
   

@@ -1,105 +1,31 @@
 import Navbar from '../NavBar/navbar'; 
-import mapboxgl from 'mapbox-gl';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState} from 'react';
 import axios from '../../../api/axios';
-import { TextField } from '@mui/material';
-import { useDebounce } from '../../../hooks/useDebounce';
+import { useAuth } from '../../../context/AuthContext';
 import '../WebPage.css';
 import { Button } from '@mui/material';
 import './mapy.css';
+import Mapbox from './MapContainer/MapContainer';
+import SearchField from './SearchField';
+import LowiskoCard from './LowiskoCard';
+
 const Mapa = () => {
-  const mapRef = useRef();
-  const mapContainerRef = useRef();
   const [lowiska, setLowiska] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const debouncedSearchQuery = useDebounce(searchQuery, 100);
-  useEffect(() => {
-    mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
-    mapRef.current = new mapboxgl.Map({
-      container: mapContainerRef.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [19.944, 50.064],
-      zoom: 10
-    });
-    return () => mapRef.current.remove();
-  }, [])
+  const {user} = useAuth();
 
-  useEffect(() => {
-      if(!"geolocation" in navigator) {
-        console.log("Brak geolokalizacji");
-        return;
-      }
-      navigator.geolocation.getCurrentPosition(position => {
-        const { latitude, longitude } = position.coords;
-        mapRef.current.setCenter([longitude, latitude]);
-      }, error => {
-        console.error("Błąd geolokalizacji:", error);
-      });
-    }, []);
+  
 
-    useEffect(() => {
-        const fetchLowiska = async () => {
-        try {
-          await axios.get(`/lowiska`, {
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            withCredentials: true
-          }).then(response => {
-            console.log("Odpowiedź z backendu:", response.data.lowiska);
-            setLowiska(response.data.lowiska);
-          });
-          console.log("Lowiska:", lowiska);
-        } catch (error) {
-          console.error("Error fetching lowiska:", error);
-        }
-      };
-      fetchLowiska();
-    }, []);
+  const searchLowiska = () => {
+    const query = localStorage.getItem("searchQuery") || '';
+    const filteredLowiska = JSON.parse(localStorage.getItem('lowiska')).filter(lowisko => lowisko.miasto.toLowerCase().includes(query.toLowerCase()));
+    setLowiska(filteredLowiska);
+  }
 
-    useEffect(() => {
-      if(debouncedSearchQuery) {
-        const fetchLowiska = async () => {
-        try {
-          await axios.get(`/lowiska/${searchQuery}`, {
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            withCredentials: true
-          }).then(response => {
-            console.log("Odpowiedź z backendu:", response.data.lowiska);
-            setLowiska(response.data.lowiska);
-          });
-          console.log("Lowiska:", lowiska);
-        } catch (error) {
-          console.error("Error fetching lowiska:", error);
-        }
-      };
-      fetchLowiska();
-    }
-    }, [searchQuery, debouncedSearchQuery]);
-
-    // useEffect(() => {
-    //   if(lowiska.length > 0) {
-    //     lowiska.forEach(lowisko => {
-    //       console.log("Lowisko:", lowisko);
-    //       if(lowisko.lokalizacja) {
-    //         const [lat, lng] = [parseFloat(lowisko.lokalizacja.lat), parseFloat(lowisko.lokalizacja.lng)];
-    //         new mapboxgl.Marker()
-    //           .setLngLat([lng, lat])
-    //           .setPopup(new mapboxgl.Popup({ offset: 25 }).setText(lowisko.nazwa))
-    //           .addTo(mapRef.current);
-    //       }
-    //     });
-    //   }
-    // }, [lowiska]);
-
-    useEffect(() => {
-      new mapboxgl.Marker()
-        .setLngLat([18.001819336147324, 53.123595474995994])
-        .setPopup(new mapboxgl.Popup({ offset: 25 }).setText("Przykładowe Łowisko"))
-        .addTo(mapRef.current);
-    }, []);
+  useEffect(()=>{
+    setLowiska(JSON.parse(localStorage.getItem('lowiska')));
+  },[])
+  
   return (
     <div className="web-page-container">
       <Navbar />
@@ -110,32 +36,21 @@ const Mapa = () => {
             <h3 >Znajdź łowisko</h3>
             </div>
             <div style={{ width: '1920px', height: '5px' }}></div>
-              <div className="search-box-input" color="primary">
-              <TextField label="Wpisz miasto" color="white" variant="outlined" size="small" maxWidth="300px" width="100%" onChange={(e)=>setSearchQuery(e.target.value)}/>
-  </div>
-                <div style={{ width: '1920px', height: '20px' }}></div>
+              <SearchField />
                <div className="search-box-button">
-               <Button variant="outlined" allaign="center" >Szukaj</Button>
+               <Button variant="outlined" allaign="center" onClick={()=>{searchLowiska()}} >Szukaj</Button>
             </div>
             <div style={{ width: '1920px', height: '20px' }}></div>
           </div>
           <div className="results-list" style={{overflowY: 'auto', maxHeight: '400px', display: 'flex', flexDirection: 'row', gap: '10px'}}>
             {
                 lowiska?.map(lowisko => (
-                  <div key={lowisko._id} className="result-item">
-                    <h4>{lowisko.nazwa}</h4>
-                    <p>{lowisko.opis}</p>
-                    <p>Srednia Ocen: {lowisko.sredniaOcen}/5</p>
-                    <p>Ilosc Ocen: {lowisko.iloscOcen}</p>
-                  </div>
+                  <LowiskoCard key={lowisko._id} lowisko={lowisko}/>
                 ))
             }
           </div>
         </aside>
-
-        <div className="map-viewer" style={{height:'50vh'}}>
-          <div id='map-container' ref={mapContainerRef}></div>
-        </div>
+          <Mapbox lowiska={lowiska}/>
       </div>
       </div>
     
