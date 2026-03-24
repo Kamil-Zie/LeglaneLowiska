@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext } from 'react';
 import axios from '../api/axios';
 
 const AuthContext = createContext(null);
@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
             setUser(response.data.user);
             return response.data;
         } catch (error) {
-            throw error;
+            console.log({"Backend error.":error})
         }
     };
 
@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
             setUser(response.data.user);
             return response.data;
         } catch (error) {
-            throw error;
+            console.log({"Backend error.":error})
         }
     };
 
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
             setUser(null);
             localStorage.removeItem('LegalneLowiskaToken');
         } catch (error) {
-            throw error;
+            console.log({"Backend error.":error})
         }
     };
 
