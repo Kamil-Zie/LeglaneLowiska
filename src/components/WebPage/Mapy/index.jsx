@@ -1,11 +1,11 @@
-import Navbar from '../NavBar/navbar'; 
+import Navbar from '../NavBar'; 
 import { useEffect, useState} from 'react';
 import axios from '../../../api/axios';
 import { useAuth } from '../../../context/AuthContext';
 import '../WebPage.css';
 import { Button } from '@mui/material';
 import './mapy.css';
-import Mapbox from './MapContainer/MapContainer';
+import Mapbox from './MapContainer';
 import SearchField from './SearchField';
 import LowiskoCard from './LowiskoCard';
 

@@ -1,4 +1,4 @@
-import Navbar from '../NavBar/navbar';
+import Navbar from '../NavBar';
 import './mojelowiska.css';
 import { useAuth } from '../../../context/AuthContext';
 const MojeLowiska = () => {
