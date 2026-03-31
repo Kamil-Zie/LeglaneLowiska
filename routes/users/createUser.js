@@ -4,8 +4,17 @@ const User = require('../../models/uzytkownik');
 const bcrypt = require('bcrypt');
 const { createToken } = require('../../utils/JWT_Token');
 
+const { verifyTurnstileToken } = require('../../utils/Turnstile');
+
 router.post("/", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, turnstileToken } = req.body;
+
+  // Robot verification
+  const isHuman = await verifyTurnstileToken(turnstileToken);
+  if (!isHuman) {
+    return res.status(403).json({ message: "Robot verification failed! Please try again." });
+  }
+
   const nazwa = email.split('@')[0];
   await bcrypt.hash(password, 10, async (err, hash) => {
     if (err) {
