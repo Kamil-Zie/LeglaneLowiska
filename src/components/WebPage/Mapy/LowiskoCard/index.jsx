@@ -16,12 +16,11 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useAuth } from "../../../../context/AuthContext";
 import { useState, useEffect } from "react";
 
-const LowiskoCard = ({ lowisko }) => {
+const LowiskoCard = ({ lowisko, okregiList }) => {
   const { user } = useAuth();
   const [isFavorite, setIsFavorite] = useState(
     user?.ulubioneLowiska?.includes(lowisko._id) || false
   );
-  const [okregi] = useState(JSON.parse(localStorage.getItem("okregi")));
   const [okreg, setOkreg] = useState();
 
   const dodajDoUlubionych = async (lowiskoId) => {
@@ -30,8 +29,11 @@ const LowiskoCard = ({ lowisko }) => {
   };
 
   useEffect(() => {
-    okregi.forEach((o) => (o._id === lowisko.idOkregu ? setOkreg(o) : null));
-  }, []);
+    if (okregiList && lowisko.idOkregu) {
+      const foundOkreg = okregiList.find((o) => o._id === lowisko.idOkregu);
+      setOkreg(foundOkreg);
+    }
+  }, [okregiList, lowisko.idOkregu]);
 
   return (
     <Card
@@ -41,8 +43,11 @@ const LowiskoCard = ({ lowisko }) => {
         boxShadow: 2,
         display: "flex",
         flexDirection: "column",
+        overflow: "visible",
         transition: "box-shadow 0.2s ease",
         "&:hover": { boxShadow: 6 },
+        height: "100%",
+        width: "100%",
       }}
     >
       <CardContent sx={{ flexGrow: 1, minHeight: 150 }}>
