@@ -144,10 +144,27 @@ const ProfilContent = ({ userData, userPosts, onDeletePost }) => {
               
               {post.zdjecie && (
                 <Box 
-                  component="img" 
-                  src={post.zdjecie} 
-                  sx={{ width: '100%', maxHeight: 150, objectFit: 'cover', borderRadius: 2, my: 1 }} 
-                />
+                  sx={{ 
+                    width: '100%', 
+                    maxHeight: 400, 
+                    borderRadius: 2, 
+                    my: 1, 
+                    overflow: 'hidden',
+                    backgroundColor: '#f0f2f5',
+                    display: 'flex',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <Box 
+                    component="img" 
+                    src={post.zdjecie} 
+                    sx={{ 
+                      maxWidth: '100%', 
+                      maxHeight: 400, 
+                      objectFit: 'contain'
+                    }} 
+                  />
+                </Box>
               )}
               
               <Stack direction="row" spacing={1} sx={{ my: 1.5 }}>
