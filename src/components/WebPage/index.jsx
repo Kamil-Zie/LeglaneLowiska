@@ -1,15 +1,31 @@
 import './WebPage.css';
 import Navbar from './NavBar';
-import { Button, TextField, Typography, Box, Card, CardContent, Container, InputAdornment } from '@mui/material';
+import { Button, TextField, Typography, Box, Container, InputAdornment, Grid } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-
-const PLACEHOLDER_LOWISKA = [
-  { id: 1, nazwa: 'Jezioro Bydgoskie' },
-  { id: 2, nazwa: 'Stawy Milickie' },
-  { id: 3, nazwa: 'Rzeka Wisła (odcinek Mazowiecki)' },
-];
+import { useAuth } from '../../context/AuthContext';
+import { useState, useEffect } from 'react';
+import LowiskoCard from './Mapy/LowiskoCard';
 
 const WebPage = () => {
+  const { user } = useAuth();
+  const [suggestedLowiska, setSuggestedLowiska] = useState([]);
+  const [okregi, setOkregi] = useState([]);
+
+  useEffect(() => {
+    const allLowiska = JSON.parse(localStorage.getItem('lowiska')) || [];
+    const allOkregi = JSON.parse(localStorage.getItem('okregi')) || [];
+    setOkregi(allOkregi);
+
+    if (allLowiska.length > 0) {
+      // Filter out favorites
+      const nonFavorites = allLowiska.filter(l => !user?.ulubioneLowiska?.includes(l._id));
+      
+      // Shuffle and pick 9
+      const shuffled = [...nonFavorites].sort(() => 0.5 - Math.random());
+      setSuggestedLowiska(shuffled.slice(0, 8));
+    }
+  }, [user]);
+
   return (
     <Box className="web-page-container">
       <Navbar />
@@ -60,38 +76,25 @@ const WebPage = () => {
 
       {/* Lowiska list */}
       <Container component="main" sx={{ py: 5 }}>
-        <Typography variant="h6" gutterBottom>
-          Gdzie łowić:
-        </Typography>
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-            gap: 3,
-            mt: 2,
-          }}
-        >
-          {PLACEHOLDER_LOWISKA.map((lowisko) => (
-            <Card
-              key={lowisko.id}
-              variant="outlined"
-              sx={{
-                borderRadius: 2,
-                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: 4,
-                },
-              }}
-            >
-              <CardContent>
-                <Typography variant="body1" fontWeight={500}>
-                  {lowisko.nazwa}
-                </Typography>
-              </CardContent>
-            </Card>
+        <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', color: '#1a5275', mb: 3 }}>
+          Sugerowane łowiska:
+        <Grid container spacing={4} alignItems="stretch" justifyContent="center">
+          {suggestedLowiska.map((lowisko) => (
+            <Grid item key={lowisko._id} xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Box sx={{ width: '100%', maxWidth: '400px', display: 'flex' }}>
+                <LowiskoCard lowisko={lowisko} okregiList={okregi} />
+              </Box>
+            </Grid>
           ))}
-        </Box>
+        </Grid>
+          {suggestedLowiska.length === 0 && (
+            <Grid item xs={12}>
+              <Typography variant="body1" color="text.secondary" align="center">
+                Brak nowych sugestii w tej chwili.
+              </Typography>
+            </Grid>
+          )}
+        </Typography>
       </Container>
     </Box>
   );
