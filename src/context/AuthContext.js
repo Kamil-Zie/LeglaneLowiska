@@ -25,9 +25,9 @@ export const AuthProvider = ({ children }) => {
         checkUser();
     }, []);
 
-    const signIn = async (email, password, rememberMe) => {
+    const signIn = async (email, password, rememberMe, turnstileToken) => {
         try {
-            const response = await axios.post('/users/signin', { email, password });
+            const response = await axios.post('/users/signin', { email, password, turnstileToken });
             const loggedInUser = response.data.user;
             setUser(loggedInUser);
 
@@ -44,9 +44,9 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const signUp = async (email, password, rememberMe) => {
+    const signUp = async (email, password, rememberMe, turnstileToken) => {
         try {
-            const response = await axios.post('/users/signup', { email, password });
+            const response = await axios.post('/users/signup', { email, password, turnstileToken });
             const loggedInUser = response.data.user;
             setUser(loggedInUser);
 

@@ -1,5 +1,5 @@
-import {useState} from 'react';
-import { Button, Stack, TextField, Typography, Checkbox, FormControlLabel, IconButton, InputAdornment, Snackbar, Alert } from '@mui/material';
+import {useState, useEffect} from 'react';
+import { Button, Stack, TextField, Typography, Checkbox, FormControlLabel, IconButton, InputAdornment, Snackbar, Alert, Box } from '@mui/material';
 import { useAuth } from '../../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import Visibility from '@mui/icons-material/Visibility';
@@ -21,6 +21,28 @@ const SignComponent = ({SignType}) => {
         message: '',
         severity: 'error'
     });
+
+    const [turnstileToken, setTurnstileToken] = useState('');
+
+    useEffect(() => {
+        // Inject Cloudflare Turnstile script
+        if (!document.querySelector('script[src="https://challenges.cloudflare.com/turnstile/v0/api.js"]')) {
+            const script = document.createElement('script');
+            script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+            script.async = true;
+            script.defer = true;
+            document.body.appendChild(script);
+        }
+
+        // Global callback for Turnstile
+        window.onTurnstileSuccess = (token) => {
+            setTurnstileToken(token);
+        };
+
+        return () => {
+            delete window.onTurnstileSuccess;
+        };
+    }, []);
 
     const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
 
@@ -108,6 +130,16 @@ const SignComponent = ({SignType}) => {
                     label="Zapamiętaj mnie"
                     sx={{ width: '100%', mb: 1 }}
                 />
+
+                <Box sx={{ width: '100%', mb: 2, display: 'flex', justifyContent: 'center' }}>
+                    <div 
+                        className="cf-turnstile" 
+                        data-sitekey={process.env.REACT_APP_TURNSTILE_SITE_KEY || "1x00000000000000000000AA"} 
+                        data-callback="onTurnstileSuccess"
+                        data-theme="light"
+                    ></div>
+                </Box>
+
                 <Button variant="contained" color="primary" fullWidth size="large" onClick={async () => {
                     if (!validateEmail(email)) {
                         setSnackbar({
@@ -118,9 +150,18 @@ const SignComponent = ({SignType}) => {
                         return;
                     }
 
+                    if (!turnstileToken) {
+                        setSnackbar({
+                            open: true,
+                            message: "Proszę potwierdzić, że nie jesteś robotem.",
+                            severity: 'error'
+                        });
+                        return;
+                    }
+
                     if(SignType === "Logowanie" ) {
                         try {
-                            await signIn(email, password, rememberMe);
+                            await signIn(email, password, rememberMe, turnstileToken);
                             navigate('/webpage');
                         } catch (error) {
                             setSnackbar({
@@ -141,7 +182,7 @@ const SignComponent = ({SignType}) => {
                             return;
                         }
                         try {
-                            await signUp(email, password, rememberMe);
+                            await signUp(email, password, rememberMe, turnstileToken);
                             navigate('/webpage');
                         } catch (error) {
                             setSnackbar({

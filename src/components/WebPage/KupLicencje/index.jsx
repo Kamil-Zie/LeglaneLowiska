@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import axios from '../../../api/axios';
+import { useLocation } from 'react-router-dom';
 
 // Sub-components
 import LicencjaCard from './LicencjaCard';
@@ -28,6 +29,7 @@ const KupLicencje = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchQuery] = useState('');
   const [filterOkreg, setFilterOkreg] = useState('all');
+  const location = useLocation();
 
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -53,7 +55,17 @@ const KupLicencje = () => {
       }
     };
     fetchData();
-  }, []);
+
+    // Check for success status from PayU redirect
+    const queryParams = new URLSearchParams(location.search);
+    if (queryParams.get('status') === 'success') {
+      setSnackbar({
+        open: true,
+        message: 'Płatność zakończona pomyślnie! Twoja licencja zostanie wkrótce aktywowana.',
+        severity: 'success'
+      });
+    }
+  }, [location]);
 
   const filteredLicencje = licencje.filter(lic => {
     const licOkregId = lic.idOkregu || lic.idOkreguPZW;
@@ -70,11 +82,25 @@ const KupLicencje = () => {
   });
 
   const handleBuy = async (licencjaId) => {
-    setSnackbar({
-      open: true,
-      message: 'Dziękujemy za zakup! Funkcjonalność płatności zostanie dodana wkrótce.',
-      severity: 'success'
-    });
+    try {
+      setSnackbar({ open: true, message: 'Inicjowanie płatności PayU...', severity: 'info' });
+      console.log(`Initiating PayU payment for licencja ${licencjaId}`);
+      const response = await axios.post('/payments/create', { licencjaId });
+      
+      if (response.data.redirectUrl) {
+        // Redirect user to PayU payment page
+        window.location.href = response.data.redirectUrl;
+      } else {
+        throw new Error("Brak adresu przekierowania.");
+      }
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: 'Wystąpił błąd podczas inicjowania płatności. Spróbuj ponownie.',
+        severity: 'error'
+      });
+      console.error("PayU Error:", error);
+    }
   };
 
   return (
