@@ -44,12 +44,18 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const signUp = async (email, password) => {
+    const signUp = async (email, password, rememberMe) => {
         try {
             const response = await axios.post('/users/signup', { email, password });
             const loggedInUser = response.data.user;
             setUser(loggedInUser);
-            sessionStorage.setItem('userId', loggedInUser._id);
+
+            if (rememberMe) {
+                localStorage.setItem('userId', loggedInUser._id);
+            } else {
+                sessionStorage.setItem('userId', loggedInUser._id);
+            }
+
             return response.data;
         } catch (error) {
             console.error("Sign-up error:", error);
