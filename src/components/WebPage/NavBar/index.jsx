@@ -32,6 +32,18 @@ const NavBar = () => {
             </li>
 
             <li>
+            <Link to="/portal" style={{ color: 'inherit', textDecoration: 'none' }}>
+              Portal
+            </Link>
+            </li>
+
+            <li>
+            <Link to="/kup-licencje" style={{ color: 'inherit', textDecoration: 'none' }}>
+              Kup Licencję
+            </Link>
+            </li>
+
+            <li>
             <Link to="/mojelowiska" style={{ color: 'inherit', textDecoration: 'none' }}>
               Moje łowiska
             </Link>
