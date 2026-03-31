@@ -24,7 +24,7 @@ const LowiskoCard = ({ lowisko }) => {
             <p>Miasto: {lowisko.miasto}</p>
             <p>Okreg: {okreg?.nazwa}</p>
             <div>
-                <Button style={isFavorite ? {backgroundColor:"red"} : {backgroundColor:"Green"}}onClick={()=>{
+                <Button variant="outlined"style={isFavorite ? {backgroundColor:"#3c8cb9" } : {backgroundColor:"#b5dcf5"}}onClick={()=>{
                 dodajDoUlubionych(lowisko._id)
                 if(!user.ulubioneLowiska.includes(lowisko._id))
                     user.ulubioneLowiska.push(lowisko._id)
