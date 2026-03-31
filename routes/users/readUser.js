@@ -5,11 +5,21 @@ const bcrypt = require('bcrypt');
 const { createToken, verifyToken, verifyAdminToken } = require('../../utils/JWT_Token');
 const jwt = require('jsonwebtoken');
 
+const { verifyTurnstileToken } = require('../../utils/Turnstile');
+
 router.post("/", async (req ,res) => {
-  const {email, password} = req.body;
+  const {email, password, turnstileToken} = req.body;
+  
   if((email.length === 0 || password.length === 0) || !email.includes("@")) {
     return res.status(400).json({message: "Email and password are required!"});
   }
+
+  // Robot verification
+  const isHuman = await verifyTurnstileToken(turnstileToken);
+  if (!isHuman) {
+    return res.status(403).json({ message: "Robot verification failed! Please try again." });
+  }
+
   await User.findOne({email: email}).then(async (user) => {
     if(!user) return res.status(404).json({message: "User not found!"});
     await bcrypt.compare(password, user.haslo, (err, result) => {
@@ -29,12 +39,16 @@ router.get("/", verifyAdminToken, async (req, res) => {
 
 router.get("/:id", verifyToken, async (req, res) => {
     const {id} = req.params;
-    const decodedToken = jwt.decode(req.cookies["LegalneLowiskaToken"]);
-    if(decodedToken.id !== id) return res.status(403).json({message: "You can only access your own user data!"});
-    await User.findById(decodedToken.id).then((user) => {
+    try {
+        const user = await User.findById(id)
+            .populate('friends', 'nazwa miasto opis')
+            .select('-haslo'); // Exclude password field for safety
+            
         if(!user) return res.status(404).json({message: "User not found!"});
         res.status(200).json({message: "User retrieved successfully!", user});
-    }).catch((err) => res.status(500).json({message: "Error retrieving user!", error: err}));
+    } catch (err) {
+        res.status(500).json({message: "Error retrieving user!", error: err});
+    }
 });
 
 module.exports = router;
