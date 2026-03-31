@@ -30,7 +30,8 @@
 .search-box-button {
   display: flex;
   justify-content: center; /* Środkuje w poziomie */
-  width: 100%;            /* Upewnia się, że kontener zajmuje całą szerokość sidebara */
+  width: 100%;/* Upewnia się, że kontener zajmuje całą szerokość sidebara */
+  margin-top: 12px;
 }
 /* Kontener na zdjęcie mapy i pinezki */
 .mapa-wrapper {
