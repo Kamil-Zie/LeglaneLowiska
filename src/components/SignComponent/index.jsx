@@ -24,6 +24,14 @@ const SignComponent = ({SignType}) => {
 
     const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
 
+    const validateEmail = (email) => {
+        return String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+    };
+
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
 
@@ -101,6 +109,15 @@ const SignComponent = ({SignType}) => {
                     sx={{ width: '100%', mb: 1 }}
                 />
                 <Button variant="contained" color="primary" fullWidth size="large" onClick={async () => {
+                    if (!validateEmail(email)) {
+                        setSnackbar({
+                            open: true,
+                            message: "Proszę wpisać poprawny adres e-mail.",
+                            severity: 'error'
+                        });
+                        return;
+                    }
+
                     if(SignType === "Logowanie" ) {
                         try {
                             await signIn(email, password, rememberMe);
