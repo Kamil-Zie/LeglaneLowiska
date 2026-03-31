@@ -11,11 +11,13 @@ const SignComponent = ({SignType}) => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
     const { signIn, signUp } = useAuth();
     const navigate = useNavigate();
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
 
   return (
     <Stack direction="row" justifyContent="center" alignItems="center" style={{minHeight: '100vh'}}>
@@ -59,13 +61,6 @@ const SignComponent = ({SignType}) => {
                     }}
                 />
                 
-                {SignType === "Logowanie" && (
-                    <FormControlLabel
-                        control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} color="primary" />}
-                        label="Zapamiętaj mnie"
-                        sx={{ width: '100%', mb: 1 }}
-                    />
-                )}
 
                 {SignType === "Rejestracja" && (
                     <TextField 
@@ -74,17 +69,17 @@ const SignComponent = ({SignType}) => {
                         fullWidth 
                         margin="normal" 
                         error={error} 
-                        type={showPassword ? 'text' : 'password'} 
+                        type={showConfirmPassword ? 'text' : 'password'} 
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
                                     <IconButton
                                         aria-label="toggle confirm password visibility"
-                                        onClick={handleClickShowPassword}
+                                        onClick={handleClickShowConfirmPassword}
                                         edge="end"
                                     >
-                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                                     </IconButton>
                                 </InputAdornment>
                             ),
@@ -92,6 +87,11 @@ const SignComponent = ({SignType}) => {
                     />
                 )}
                 
+                <FormControlLabel
+                    control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} color="primary" />}
+                    label="Zapamiętaj mnie"
+                    sx={{ width: '100%', mb: 1 }}
+                />
                 <Button variant="contained" color="primary" fullWidth size="large" onClick={async () => {
                     if(SignType === "Logowanie" ) {
                         try {
@@ -108,7 +108,7 @@ const SignComponent = ({SignType}) => {
                             return;
                         }
                         try {
-                            await signUp(email, password);
+                            await signUp(email, password, rememberMe);
                             navigate('/webpage');
                         } catch (error) {
                             alert("Błąd rejestracji: " + (error.response?.data?.message || error.message));
@@ -128,6 +128,6 @@ const SignComponent = ({SignType}) => {
                     </Typography>)}
             </Stack>
         </Stack>
-    );
+  );
 }
 export default SignComponent;
