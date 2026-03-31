@@ -9,39 +9,15 @@ import {
   Paper,
   InputAdornment,
   Divider,
-  Skeleton,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import './mapy.css';
+
+// Sub-components
 import Mapbox from './MapContainer';
-import LowiskoCard from './LowiskoCard';
-
-const LowiskoCardSkeleton = () => (
-  <Box
-    sx={{
-      borderRadius: 3,
-      p: 2,
-      border: '1px solid',
-      borderColor: 'divider',
-    }}
-  >
-    <Skeleton variant="text" width="70%" height={28} />
-    <Skeleton variant="text" width="100%" height={18} sx={{ mt: 0.5 }} />
-    <Skeleton variant="text" width="90%" height={18} />
-    <Divider sx={{ my: 1 }} />
-    <Skeleton variant="text" width="50%" height={18} />
-    <Skeleton variant="text" width="40%" height={18} sx={{ mt: 0.5 }} />
-    <Skeleton variant="rounded" width={80} height={24} sx={{ mt: 1 }} />
-    <Skeleton variant="rounded" width="100%" height={36} sx={{ mt: 1.5, borderRadius: 2 }} />
-  </Box>
-);
-
-const MapSkeleton = () => (
-  <Skeleton
-    variant="rounded"
-    sx={{ flexGrow: 1, minHeight: '60vh', borderRadius: 3 }}
-  />
-);
+import LowiskoCard from '../LowiskoCard';
+import LowiskoCardSkeleton from './LowiskoCardSkeleton';
+import MapSkeleton from './MapSkeleton';
 
 const Mapa = () => {
   const [lowiska, setLowiska] = useState([]);

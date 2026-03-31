@@ -1,4 +1,4 @@
-import axios from "../../../../api/axios";
+import axios from "../../../api/axios";
 import {
   Button,
   Card,
@@ -13,7 +13,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StarIcon from "@mui/icons-material/Star";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { useAuth } from "../../../../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import { useState, useEffect } from "react";
 
 const LowiskoCard = ({ lowisko, okregiList }) => {

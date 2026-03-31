@@ -4,7 +4,7 @@ import { Button, TextField, Typography, Box, Container, InputAdornment, Grid } f
 import SearchIcon from '@mui/icons-material/Search';
 import { useAuth } from '../../context/AuthContext';
 import { useState, useEffect } from 'react';
-import LowiskoCard from './Mapy/LowiskoCard';
+import LowiskoCard from './LowiskoCard';
 
 const WebPage = () => {
   const { user } = useAuth();

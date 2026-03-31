@@ -5,14 +5,6 @@ import {
   Container,
   Typography,
   Grid,
-  Card,
-  CardContent,
-  CardActions,
-  Button,
-  Chip,
-  Divider,
-  Stack,
-  Skeleton,
   FormControl,
   InputLabel,
   Select,
@@ -22,32 +14,13 @@ import {
   Paper
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import axios from '../../../api/axios';
-import { useAuth } from '../../../context/AuthContext';
 
-const LicencjaSkeleton = () => (
-  <Card sx={{ width: '100%', borderRadius: 3, height: '100%' }}>
-    <CardContent sx={{ flexGrow: 1 }}>
-      <Stack direction="row" justifyContent="space-between" mb={2}>
-        <Skeleton variant="circular" width={40} height={40} />
-        <Skeleton variant="rounded" width={80} height={24} />
-      </Stack>
-      <Skeleton variant="text" width="60%" height={32} sx={{ mb: 1 }} />
-      <Skeleton variant="text" width="90%" height={20} />
-      <Skeleton variant="text" width="80%" height={20} sx={{ mb: 2 }} />
-      <Divider sx={{ my: 1.5 }} />
-      <Skeleton variant="text" width="40%" height={40} />
-    </CardContent>
-    <CardActions sx={{ p: 2, pt: 0 }}>
-      <Skeleton variant="rounded" width="100%" height={36} />
-    </CardActions>
-  </Card>
-);
+// Sub-components
+import LicencjaCard from './LicencjaCard';
+import LicencjaSkeleton from './LicencjaSkeleton';
 
 const KupLicencje = () => {
-  const { user } = useAuth();
   const [licencje, setLicencje] = useState([]);
   const [okregi, setOkregi] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -158,57 +131,12 @@ const KupLicencje = () => {
               const licOkregId = lic.idOkregu || lic.idOkreguPZW;
               const okreg = okregi.find(o => o._id === licOkregId);
               return (
-                <Grid item key={lic._id} xs={12} sm={6} md={4} sx={{ display: 'flex' }}>
-                  <Card sx={{ 
-                    width: '100%', 
-                    display: 'flex', 
-                    flexDirection: 'column', 
-                    borderRadius: 3,
-                    transition: 'transform 0.2s',
-                    '&:hover': { transform: 'translateY(-5px)', boxShadow: 6 }
-                  }}>
-                    <CardContent sx={{ flexGrow: 1 }}>
-                      <Stack direction="row" justifyContent="space-between" alignItems="flex-start" mb={2}>
-                        <AssignmentIcon color="primary" sx={{ fontSize: 40 }} />
-                        <Chip 
-                          label={lic.czyCzlonekPZW ? "Członek PZW" : "Niezrzeszony"} 
-                          color={lic.czyCzlonekPZW ? "success" : "default"}
-                          size="small"
-                        />
-                      </Stack>
-                      
-                      <Typography variant="h6" fontWeight="bold" gutterBottom>
-                        {okreg?.nazwa || "Okręg PZW"}
-                      </Typography>
-                      
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 2, minHeight: 40 }}>
-                        {lic.opis || "Zezwolenie na amatorski połów ryb wędką."}
-                      </Typography>
-                      
-                      <Divider sx={{ my: 1.5 }} />
-                      
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <Typography variant="h5" color="primary.main" fontWeight="bold">
-                          {lic.cena} PLN
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          / {lic.czasTrwania} dni
-                        </Typography>
-                      </Stack>
-                    </CardContent>
-                    <CardActions sx={{ p: 2, pt: 0 }}>
-                      <Button 
-                        fullWidth 
-                        variant="contained" 
-                        startIcon={<ShoppingCartIcon />}
-                        onClick={() => handleBuy(lic._id)}
-                        sx={{ borderRadius: 2, fontWeight: 'bold' }}
-                      >
-                        Kupuję
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
+                <LicencjaCard 
+                  key={lic._id} 
+                  lic={lic} 
+                  okreg={okreg} 
+                  onBuy={handleBuy} 
+                />
               );
             })}
             {filteredLicencje.length === 0 && (

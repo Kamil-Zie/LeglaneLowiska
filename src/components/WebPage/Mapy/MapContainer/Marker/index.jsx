@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import { createPortal } from 'react-dom';
 import { useAuth } from '../../../../../context/AuthContext';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import LowiskoCard from '../../LowiskoCard';
+import LowiskoCard from '../../../LowiskoCard';
 
 const Marker = ({ map, lowisko, okregiList }) => {
   const { user } = useAuth();
