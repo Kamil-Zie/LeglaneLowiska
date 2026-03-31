@@ -19,6 +19,7 @@ import {
   DialogActions,
   Stack,
   Chip,
+  Skeleton,
 } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -32,9 +33,36 @@ import { useAuth } from '../../../context/AuthContext';
 import axios from '../../../api/axios';
 import Navbar from '../NavBar';
 
+const PostSkeleton = () => (
+  <Card sx={{ borderRadius: 3, boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+    <CardHeader
+      avatar={<Skeleton variant="circular" width={40} height={40} />}
+      title={<Skeleton variant="text" width="40%" height={20} />}
+      subheader={<Skeleton variant="text" width="30%" height={15} />}
+    />
+    <CardContent>
+      <Skeleton variant="rectangular" width="100%" height={200} sx={{ borderRadius: 2, mb: 2 }} />
+      <Skeleton variant="text" width="60%" height={25} sx={{ mb: 2 }} />
+      <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
+        <Skeleton variant="rounded" width={60} height={32} />
+        <Skeleton variant="rounded" width={60} height={32} />
+        <Skeleton variant="rounded" width={100} height={32} />
+      </Stack>
+      <Skeleton variant="text" width="90%" height={20} />
+      <Skeleton variant="text" width="80%" height={20} />
+    </CardContent>
+    <Divider sx={{ mx: 2 }} />
+    <CardActions sx={{ px: 2, justifyContent: 'space-around' }}>
+      <Skeleton variant="text" width="30%" height={40} />
+      <Skeleton variant="text" width="30%" height={40} />
+    </CardActions>
+  </Card>
+);
+
 const Portal = () => {
   const { user } = useAuth();
   const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
@@ -48,11 +76,14 @@ const Portal = () => {
   });
 
   const fetchPosts = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get('/portal/posts');
       setPosts(response.data.posts);
     } catch (err) {
       console.error('Błąd podczas pobierania postów:', err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -189,17 +220,25 @@ const Portal = () => {
 
         {/* Feed */}
         <Stack spacing={3}>
-          {posts.map((post) => (
-            <PostCard 
-              key={post._id} 
-              post={post} 
-              currentUser={user} 
-              onLike={() => handleLike(post._id)}
-              onComment={(tekst) => handleComment(post._id, tekst)}
-              onDelete={() => handleDelete(post._id)}
-              onEdit={() => handleEditOpen(post)}
-            />
-          ))}
+          {isLoading ? (
+            [1, 2, 3].map((i) => <PostSkeleton key={i} />)
+          ) : posts.length > 0 ? (
+            posts.map((post) => (
+              <PostCard 
+                key={post._id} 
+                post={post} 
+                currentUser={user} 
+                onLike={() => handleLike(post._id)}
+                onComment={(tekst) => handleComment(post._id, tekst)}
+                onDelete={() => handleDelete(post._id)}
+                onEdit={() => handleEditOpen(post)}
+              />
+            ))
+          ) : (
+            <Paper sx={{ p: 4, textAlign: 'center', borderRadius: 3 }}>
+              <Typography color="text.secondary">Brak postów do wyświetlenia. Bądź pierwszy!</Typography>
+            </Paper>
+          )}
         </Stack>
       </Container>
 
