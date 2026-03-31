@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
+import blur1 from './blur1.jpg';
 const SignComponent = ({SignType}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -58,11 +58,35 @@ const SignComponent = ({SignType}) => {
     const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
 
   return (
-    <Stack direction="row" justifyContent="center" alignItems="center" style={{minHeight: '100vh'}}>
-        <Stack direction="column" justifyContent="center" alignItems="center" spacing={2} style={{minHeight: '100vh', width: '100%', maxWidth: '400px', padding: '0 20px'}}>
+    <Stack direction="row" justifyContent="center" alignItems="center" 
+  style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
+  
+  {/* TO DODAJ - zdjęcie w tle */}
+  <div style={{
+    position: 'absolute',
+    inset: 0,
+    backgroundImage: `url(${blur1})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    filter: 'blur(3px) brightness(0.22)',
+    transform: 'scale(1.08)',
+    zIndex: 0,
+  }} />
+        <Stack direction="column" justifyContent="center" alignItems="center" spacing={2} 
+  style={{ 
+    width: '100%', 
+    maxWidth: '400px', 
+    padding: '40px 20px', 
+    position: 'relative', 
+    zIndex: 1,
+    background: 'rgba(255, 255, 255, 0.2)',
+    backdropFilter: 'blur(50px) brightness(3)',
+    borderRadius: '16px',
+    margin: 'auto',
+  }}>
             <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
                 <img src="logo.svg" alt="Logo" width={60} height={60} />
-                <Typography align="center" style={{fontSize: 32, fontWeight: 'bold', color: '#2e7d32'}}>
+                <Typography align="center" style={{fontSize: 32, fontWeight: 'bold', color: '#1a5275'}}>
                     Legalne Łowiska
                 </Typography>
             </Stack>
@@ -73,7 +97,7 @@ const SignComponent = ({SignType}) => {
                     label="Email" 
                     variant="outlined" 
                     fullWidth 
-                    margin="normal" 
+                    margin="normal"
                     onChange={(e) => setEmail(e.target.value)} 
                 />
                 <TextField 
@@ -126,7 +150,7 @@ const SignComponent = ({SignType}) => {
                 )}
                 
                 <FormControlLabel
-                    control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} color="primary" />}
+                    control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} color="#1a5275" />}
                     label="Zapamiętaj mnie"
                     sx={{ width: '100%', mb: 1 }}
                 />
@@ -206,10 +230,10 @@ const SignComponent = ({SignType}) => {
 
                 {SignType === "Logowanie" ? (
                     <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-                        Nie masz konta? <Link to="/signup" style={{ color: '#2e7d32', fontWeight: 'bold', textDecoration: 'none' }}>Zarejestruj się.</Link>
+                        Nie masz konta? <Link to="/signup" style={{ color: '#1a5275', fontWeight: 'bold', textDecoration: 'none' }}>Zarejestruj się.</Link>
                     </Typography>) : (
                     <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-                        Masz już konto? <Link to="/" style={{ color: '#2e7d32', fontWeight: 'bold', textDecoration: 'none' }}>Zaloguj się.</Link>
+                        Masz już konto? <Link to="/" style={{ color: '#1a5275', fontWeight: 'bold', textDecoration: 'none' }}>Zaloguj się.</Link>
                     </Typography>)}
             </Stack>
         </Stack>

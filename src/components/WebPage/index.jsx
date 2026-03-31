@@ -46,31 +46,8 @@ const WebPage = () => {
           className="search-container"
           sx={{ mt: 3, display: 'flex', justifyContent: 'center', gap: 1 }}
         >
-          <TextField
-            variant="outlined"
-            placeholder="Wpisz miasto"
-            size="small"
-            sx={{
-              backgroundColor: 'white',
-              borderRadius: 1,
-              width: 350,
-              '& .MuiOutlinedInput-root': { borderRadius: '25px 0 0 25px' },
-            }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon color="action" />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ borderRadius: '0 25px 25px 0', px: 3, fontWeight: 'bold' }}
-          >
-            Szukaj
-          </Button>
+         
+          
         </Box>
       </Box>
 
