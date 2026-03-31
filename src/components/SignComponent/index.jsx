@@ -41,8 +41,8 @@ const SignComponent = ({SignType}) => {
     padding: '40px 20px', 
     position: 'relative', 
     zIndex: 1,
-    background: 'rgb(255, 255, 255)',
-    backdropFilter: 'blur(50px) brightness(1)',
+    background: 'rgba(255, 255, 255, 0.2)',
+    backdropFilter: 'blur(50px) brightness(3)',
     borderRadius: '16px',
     margin: 'auto',
   }}>
