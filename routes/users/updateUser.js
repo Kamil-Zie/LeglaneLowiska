@@ -6,14 +6,18 @@ const jwt = require('jsonwebtoken');
 
 router.put("/:id", verifyToken, async (req, res) => {
     const userId = req.params.id;
-    const { nazwa, miasto, email, haslo } = req.body;
-    if(verifyToken) {
-        const decodedToken = jwt.decode(req.cookies["LegalneLowiskaToken"]);
-        if(decodedToken.id !== userId) return res.status(403).json({message: "You can only update your own user data!"});
-    }
+    const { nazwa, miasto, email, opis, nrKartyPZW, lokalizacja } = req.body;
+    
+    // verifyToken middleware already sets req.user with decoded token
+    if(req.user.id !== userId) return res.status(403).json({message: "You can only update your own user data!"});
+
     try {
-        const updatedUser = await User
-            .findByIdAndUpdate(userId, { email, password }, { new: true });
+        const updatedUser = await User.findByIdAndUpdate(
+            userId, 
+            { nazwa, miasto, email, opis, nrKartyPZW, lokalizacja }, 
+            { new: true }
+        );
+        
         if (!updatedUser) {
             return res.status(404).json({ message: "User not found!" });
         }

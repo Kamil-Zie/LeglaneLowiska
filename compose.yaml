@@ -1,0 +1,12 @@
+services:
+
+  backend:
+    build: .
+    container_name: legalne-lowiska-backend
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: 8080
+      MONGO_URI: ${MONGO_URI}
+      JWT_SECRET: ${JWT_SECRET}
+    restart: unless-stopped
