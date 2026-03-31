@@ -1,47 +1,82 @@
-import React, { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext, useEffect } from 'react';
 import axios from '../api/axios';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    const signIn = async (email, password) => {
+    useEffect(() => {
+        const checkUser = async () => {
+            const storedUserId = localStorage.getItem('userId') || sessionStorage.getItem('userId');
+            if (storedUserId) {
+                try {
+                    const response = await axios.get(`/users/${storedUserId}`);
+                    setUser(response.data.user);
+                } catch (error) {
+                    console.error("Auto-login failed:", error);
+                    localStorage.removeItem('userId');
+                    sessionStorage.removeItem('userId');
+                }
+            }
+            setLoading(false);
+        };
+        checkUser();
+    }, []);
+
+    const signIn = async (email, password, rememberMe) => {
         try {
-            // Zakładając, że endpoint readUser jest podpięty pod /readUser lub /users
             const response = await axios.post('/users/signin', { email, password });
-            setUser(response.data.user);
+            const loggedInUser = response.data.user;
+            setUser(loggedInUser);
+
+            if (rememberMe) {
+                localStorage.setItem('userId', loggedInUser._id);
+            } else {
+                sessionStorage.setItem('userId', loggedInUser._id);
+            }
+
             return response.data;
         } catch (error) {
+            console.error("Sign-in error:", error);
             throw error;
         }
     };
 
-    const signUp = async (email, password) => {
+    const signUp = async (email, password, rememberMe) => {
         try {
-            // Zakładając, że endpoint createUser jest podpięty pod /createUser lub /users
             const response = await axios.post('/users/signup', { email, password });
-            setUser(response.data.user);
+            const loggedInUser = response.data.user;
+            setUser(loggedInUser);
+
+            if (rememberMe) {
+                localStorage.setItem('userId', loggedInUser._id);
+            } else {
+                sessionStorage.setItem('userId', loggedInUser._id);
+            }
+
             return response.data;
         } catch (error) {
+            console.error("Sign-up error:", error);
             throw error;
         }
     };
-
 
     const signOut = async () => {
         try {
             await axios.post('/users/signout');
             setUser(null);
-            localStorage.removeItem('LegalneLowiskaToken');
+            localStorage.removeItem('userId');
+            sessionStorage.removeItem('userId');
         } catch (error) {
-            throw error;
+            console.error("Sign-out error:", error);
         }
     };
 
     return (
-        <AuthContext.Provider value={{ user, signIn, signUp, signOut }}>
-            {children}
+        <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut }}>
+            {!loading && children}
         </AuthContext.Provider>
     );
 };
