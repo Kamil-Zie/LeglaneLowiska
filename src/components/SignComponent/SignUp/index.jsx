@@ -2,7 +2,7 @@ import SignComponent from ".."
 
 const SignUp = () => {
     return (
-        <SignComponent SignType="Sign Up" />
+        <SignComponent SignType="Rejestracja" />
     )
 }
 export default SignUp;

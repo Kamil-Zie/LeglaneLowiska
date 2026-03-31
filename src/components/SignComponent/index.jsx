@@ -1,12 +1,14 @@
-import React from 'react';
+import {useState} from 'react';
 import { Button, Stack, TextField, Typography } from '@mui/material';
 import { useAuth } from '../../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 
 const SignComponent = ({SignType}) => {
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const [confirmPassword, setConfirmPassword] = React.useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState(false);
+    const [seePassword, setSeePassword] = useState(false);
     const { signIn, signUp } = useAuth();
     const navigate = useNavigate();
   return (
@@ -22,12 +24,20 @@ const SignComponent = ({SignType}) => {
                 {SignType}
                 </Typography>
                 <TextField label="Email" variant="outlined" fullWidth margin="normal" onChange={(e) => setEmail(e.target.value)} />
-                <TextField label="Password" variant="outlined" fullWidth margin="normal" type="password" onChange={(e) => setPassword(e.target.value)} />
-                {SignType === "Sign Up" && (
-                    <TextField label="Confirm Password" variant="outlined" fullWidth margin="normal" type="password" onChange={(e) => setConfirmPassword(e.target.value)}/>
+                <TextField label="Password" variant="outlined" fullWidth margin="normal" error={error} type="password" onChange={(e) => setPassword(e.target.value)} >
+                    <Button onClick={() => setSeePassword(!seePassword)}>
+                        {seePassword ? "Hide" : "Show"}
+                    </Button>
+                </TextField>
+                {SignType === "Rejestracja" && (
+                    <TextField label="Confirm Password" variant="outlined" fullWidth margin="normal" error={error} type="password" onChange={(e) => setConfirmPassword(e.target.value)}>
+                        <Button onClick={() => setSeePassword(!seePassword)}>
+                            {seePassword ? "Hide" : "Show"}
+                        </Button>
+                    </TextField>
                 )}
                 <Button variant="contained" color="primary" fullWidth onClick={async () => {
-                    if(SignType === "Sign In" ) {
+                    if(SignType === "Logowanie" ) {
                         try {
                             await signIn(email, password);
                             navigate('/webpage');
@@ -37,7 +47,7 @@ const SignComponent = ({SignType}) => {
                     }
                     else {
                         if(password !== confirmPassword) {
-                            alert("Passwords do not match!");
+                            setError(true)
                             return;
                         }
                         try {
@@ -50,12 +60,12 @@ const SignComponent = ({SignType}) => {
                 }}>
                     {SignType}
                 </Button>
-                {SignType === "Sign In" ? (
+                {SignType === "Logowanie" ? (
                     <Typography variant="body2" align="center">
-                        Don't have an account? <Link to="/signup">Sign Up</Link>
+                        Nie masz konta? <Link to="/signup">Zarejestruj się.</Link>
                     </Typography>) : (
                     <Typography variant="body2" align="center">
-                        Already have an account? <Link to="/">Sign In</Link>
+                        Masz już konto? <Link to="/">Zaloguj się.</Link>
                     </Typography>)}
             </Stack>
         </Stack>
