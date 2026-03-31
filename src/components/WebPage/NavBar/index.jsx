@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import {useNavigate} from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Button, Badge } from '@mui/material';
 import './navbar.css';
 
 const NavBar = () => {
   
-  const { signOut } = useAuth();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
 
@@ -23,6 +23,14 @@ const NavBar = () => {
             <li>
             <Link to="/profil" style={{ color: 'inherit', textDecoration: 'none' }}>
               Profil
+            </Link>
+            </li>
+
+            <li>
+            <Link to="/znajomi" style={{ color: 'inherit', textDecoration: 'none' }}>
+              <Badge badgeContent={user?.friendRequests?.length} color="error" overlap="circular">
+                Znajomi
+              </Badge>
             </Link>
             </li>
               <li>
