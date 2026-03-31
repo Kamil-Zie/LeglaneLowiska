@@ -1,23 +1,33 @@
 import React from 'react';
-import { Card, CardContent, CardActions, Stack, Skeleton, Divider } from '@mui/material';
 
 const LicencjaSkeleton = () => (
-  <Card sx={{ width: '100%', borderRadius: 3, height: '100%' }}>
-    <CardContent sx={{ flexGrow: 1 }}>
-      <Stack direction="row" justifyContent="space-between" mb={2}>
-        <Skeleton variant="circular" width={40} height={40} />
-        <Skeleton variant="rounded" width={80} height={24} />
-      </Stack>
-      <Skeleton variant="text" width="60%" height={32} sx={{ mb: 1 }} />
-      <Skeleton variant="text" width="90%" height={20} />
-      <Skeleton variant="text" width="80%" height={20} sx={{ mb: 2 }} />
-      <Divider sx={{ my: 1.5 }} />
-      <Skeleton variant="text" width="40%" height={40} />
-    </CardContent>
-    <CardActions sx={{ p: 2, pt: 0 }}>
-      <Skeleton variant="rounded" width="100%" height={36} />
-    </CardActions>
-  </Card>
+  <div className="bg-white rounded-xl border border-solid border-outline-variant overflow-hidden shadow-sm animate-pulse flex flex-col h-full w-full">
+    <div className="h-40 bg-slate-100 flex items-center justify-center">
+      <div className="w-16 h-16 rounded-full bg-white/50" />
+    </div>
+
+    <div className="p-6 flex flex-col flex-grow">
+      <div className="h-6 w-3/4 bg-slate-100 rounded mb-4" />
+      
+      <div className="flex items-center gap-2 mb-4">
+        <div className="w-4 h-4 bg-slate-50 rounded" />
+        <div className="h-3 w-32 bg-slate-50 rounded" />
+      </div>
+
+      <div className="space-y-2 mb-6">
+        <div className="h-3 w-full bg-slate-50 rounded" />
+        <div className="h-3 w-5/6 bg-slate-50 rounded" />
+      </div>
+
+      <div className="mt-auto pt-6 border-0 border-t border-solid border-slate-50 flex items-center justify-between">
+        <div className="space-y-1">
+          <div className="h-2 w-12 bg-slate-50 rounded" />
+          <div className="h-6 w-24 bg-slate-100 rounded" />
+        </div>
+        <div className="h-10 w-28 bg-slate-100 rounded-lg" />
+      </div>
+    </div>
+  </div>
 );
 
 export default LicencjaSkeleton;

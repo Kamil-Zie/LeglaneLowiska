@@ -1,13 +1,93 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Surface colors */
+  --bg-surface: #f7f9fb;
+  --text-on-surface: #191c1e;
+  --surface-container: #eceef0;
+  --surface-container-low: #f2f4f6;
+  --surface-container-high: #e6e8ea;
+  --surface-container-highest: #e0e3e5;
+  --surface-container-lowest: #ffffff;
+  
+  /* Brand colors */
+  --primary: #17637d;
+  --on-primary: #ffffff;
+  --primary-container: #387c97;
+  --on-primary-container: #fbfdff;
+  --primary-fixed: #bce9ff;
+  --on-primary-fixed: #001f2a;
+
+  --secondary: #1e6964;
+  --on-secondary: #ffffff;
+  --secondary-container: #a7ece6;
+  --on-secondary-container: #246d68;
+
+  --tertiary: #1e637e;
+  --on-tertiary: #ffffff;
+  --tertiary-container: #3d7c98;
+  --tertiary-fixed: #c0e8ff;
+
+  --error: #ba1a1a;
+  --on-error: #ffffff;
+  --error-container: #ffdad6;
+  --on-error-container: #93000a;
+
+  --outline: #70787d;
+  --outline-variant: #bfc8cd;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.dark {
+  /* Surface colors */
+  --bg-surface: #0f172a;
+  --text-on-surface: #f1f5f9;
+  --surface-container: #1e293b;
+  --surface-container-low: #0f172a;
+  --surface-container-high: #334155;
+  --surface-container-highest: #475569;
+  --surface-container-lowest: #1e293b;
+
+  /* Brand colors - adapted for dark */
+  --primary: #8ecfed;
+  --on-primary: #003544;
+  --primary-container: #004d64;
+  --on-primary-container: #bce9ff;
+  --primary-fixed: #bce9ff;
+  --on-primary-fixed: #001f2a;
+
+  --secondary: #8ed3cd;
+  --on-secondary: #003733;
+  --secondary-container: #00504c;
+  --on-secondary-container: #aaefe9;
+
+  --tertiary: #92cfee;
+  --on-tertiary: #003545;
+  --tertiary-container: #004d66;
+  --on-tertiary-container: #c0e8ff;
+
+  --error: #ffb4ab;
+  --on-error: #690005;
+  --error-container: #93000a;
+  --on-error-container: #ffdad6;
+
+  --outline: #8a9297;
+  --outline-variant: #40484c;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-surface);
+  color: var(--text-on-surface);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

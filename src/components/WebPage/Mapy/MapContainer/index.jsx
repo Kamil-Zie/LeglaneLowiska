@@ -1,19 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import mapboxgl from 'mapbox-gl';
 import Marker from './Marker';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { ThemeContext } from '../../../../App';
 
 const Mapbox = ({ lowiska, okregiList }) => {
   const mapContainerRef = useRef();
   const [map, setMap] = useState(null);
   const [visibleLowiska, setVisibleLowiska] = useState([]);
+  const { mode } = useContext(ThemeContext);
 
   useEffect(() => {
     mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
     const mapInstance = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
+      style: mode === 'dark' ? 'mapbox://styles/mapbox/dark-v10' : 'mapbox://styles/mapbox/streets-v11',
       center: [19.944, 50.064],
       zoom: 9
     });
@@ -23,7 +25,7 @@ const Mapbox = ({ lowiska, okregiList }) => {
     });
 
     return () => mapInstance.remove();
-  }, []);
+  }, [mode]); // Re-initialize map on mode change to swap styles smoothly
 
   useEffect(() => {
     if (!map) return;
@@ -42,7 +44,6 @@ const Mapbox = ({ lowiska, okregiList }) => {
     map.on('moveend', updateVisibleMarkers);
     map.on('zoomend', updateVisibleMarkers);
     
-    // Initial update when map or lowiska changes
     updateVisibleMarkers();
 
     return () => {
@@ -55,7 +56,6 @@ const Mapbox = ({ lowiska, okregiList }) => {
     if (!map) return;
     
     if (!("geolocation" in navigator)) {
-      console.log("Brak geolokalizacji");
       return;
     }
 

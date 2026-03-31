@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { createPortal } from 'react-dom';
 import { useAuth } from '../../../../../context/AuthContext';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import LowiskoCard from '../../../LowiskoCard';
 
 const Marker = ({ map, lowisko, okregiList }) => {
@@ -19,12 +18,14 @@ const Marker = ({ map, lowisko, okregiList }) => {
     const [lat, lng] = [parseFloat(lowisko.lat), parseFloat(lowisko.lng)];
     
     if (isNaN(lat) || isNaN(lng)) {
-      console.warn("Invalid coordinates for lowisko:", lowisko.nazwa);
       return;
     }
 
-    const popup = new mapboxgl.Popup({ offset: 25, maxWidth: '300px', style:{backgroundColor:"transparent"} })
-      .setDOMContent(popupRef.current);
+    const popup = new mapboxgl.Popup({ 
+      offset: 35, 
+      maxWidth: '300px',
+      className: 'custom-map-popup'
+    }).setDOMContent(popupRef.current);
 
     markerRef.current = new mapboxgl.Marker(contentRef.current)
       .setLngLat([lng, lat])
@@ -41,34 +42,28 @@ const Marker = ({ map, lowisko, okregiList }) => {
   return (
     <>
       {createPortal(
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "4px",
-            padding: "4px 12px",
-            borderRadius: "20px",
-            backgroundColor: isFavorite ? "#ffebee" : "#fff",
-            boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.3)",
-            fontFamily: "'Segoe UI', Roboto, sans-serif",
-            fontSize: "13px",
-            fontWeight: "bold",
-            color: isFavorite ? "#d32f2f" : "#2e7d32",
-            textAlign: "center",
-            cursor: "pointer",
-            whiteSpace: "nowrap",
-            border: isFavorite ? "2px solid #d32f2f" : "2px solid #2e7d32",
-            transition: "all 0.3s ease"
-          }}
-        >
-          {isFavorite && <FavoriteIcon sx={{ fontSize: 16 }} />}
-          {lowisko.nazwa}
+        <div className="relative flex flex-col items-center group cursor-pointer">
+          {/* Tooltip on hover */}
+          <div className="absolute -top-10 bg-primary/90 backdrop-blur-sm text-white text-[10px] font-bold px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-50">
+            {lowisko.nazwa}
+          </div>
+          
+          {/* The Pin */}
+          <div className={`w-8 h-8 rounded-full border-2 border-solid border-white shadow-xl flex items-center justify-center transform hover:scale-110 transition-transform ${isFavorite ? 'bg-error' : 'bg-primary'}`}>
+            <span className="material-symbols-outlined text-white text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>
+              {isFavorite ? 'favorite' : 'water'}
+            </span>
+          </div>
+          
+          {/* Pulsing effect if favorite */}
+          {isFavorite && (
+            <div className="absolute top-0 left-0 w-8 h-8 rounded-full bg-error/40 animate-ping -z-10" />
+          )}
         </div>,
         contentRef.current
       )}
       {createPortal(
-        <div style={{ width: '280px', backgroundColor: 'transparent' }}>
+        <div className="w-72 bg-transparent overflow-hidden rounded-xl shadow-2xl">
           <LowiskoCard lowisko={lowisko} okregiList={okregiList} />
         </div>,
         popupRef.current

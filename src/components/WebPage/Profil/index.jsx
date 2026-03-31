@@ -3,8 +3,6 @@ import { useParams } from 'react-router-dom';
 import Navbar from '../NavBar';
 import { useAuth } from '../../../context/AuthContext';
 import axios from '../../../api/axios';
-import './pr0fil.css';
-import '../WebPage.css';
 import { Snackbar, Alert, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 
 // Sub-components
@@ -113,33 +111,34 @@ const Profil = () => {
   };
 
   return (
-    <>
+    <div className="bg-surface dark:bg-slate-950 font-body text-on-surface min-h-screen flex flex-col transition-colors duration-300">
       <Navbar />
-      <div className="web-page-container">
+      
+      <main className="flex-grow w-full max-w-screen-xl mx-auto px-6 py-8">
         {isLoading ? (
           <ProfilSkeleton />
         ) : (
-          <div className="profil-wrapper">
+          <div className="max-w-4xl mx-auto">
+            {/* Top Profile Card with Banner */}
             <ProfilCard 
               userData={userData} 
               onEdit={handleEditOpen} 
               isOwner={isOwner} 
             />
             
-            <div className="badge-list">
-              <span className="skill-badge">PZW Member</span>
-            </div>
-
+            {/* Horizontal Stats Section */}
             <ProfilStats 
               userPosts={userPosts} 
               userData={userData} 
             />
 
+            {/* Friends Grid Section */}
             <FriendsPreview 
               userData={userData} 
               isOwner={isOwner} 
             />
 
+            {/* User Activity / Posts Feed */}
             <UserPosts 
               userPosts={userPosts} 
               isOwner={isOwner} 
@@ -148,7 +147,7 @@ const Profil = () => {
             />
           </div>
         )}
-      </div>
+      </main>
 
       {isOwner && (
         <EditProfileDialog 
@@ -161,26 +160,30 @@ const Profil = () => {
       )}
 
       {/* Confirmation Dialog */}
-      <Dialog open={confirmDialog.open} onClose={() => setConfirmDialog({ open: false, postId: null })}>
-        <DialogTitle>Usunąć post?</DialogTitle>
+      <Dialog 
+        open={confirmDialog.open} 
+        onClose={() => setConfirmDialog({ open: false, postId: null })}
+        PaperProps={{ sx: { borderRadius: 3 } }}
+      >
+        <DialogTitle sx={{ fontWeight: 900, color: 'error.main' }}>Usunąć post?</DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText sx={{ color: 'text.primary', fontWeight: 500 }}>
             Czy na pewno chcesz usunąć ten post? Tej operacji nie można cofnąć.
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setConfirmDialog({ open: false, postId: null })} color="inherit">Anuluj</Button>
-          <Button onClick={handleDeleteConfirm} color="error" variant="contained">Usuń</Button>
+        <DialogActions sx={{ p: 3 }}>
+          <Button onClick={() => setConfirmDialog({ open: false, postId: null })} color="inherit" sx={{ fontWeight: 700 }}>Anuluj</Button>
+          <Button onClick={handleDeleteConfirm} color="error" variant="contained" sx={{ fontWeight: 700, borderRadius: 2 }}>Usuń bezpowrotnie</Button>
         </DialogActions>
       </Dialog>
 
       {/* Notification Snackbar */}
       <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%', borderRadius: 2, fontWeight: 600 }}>
           {snackbar.message}
         </Alert>
       </Snackbar>
-    </>
+    </div>
   );
 };
 

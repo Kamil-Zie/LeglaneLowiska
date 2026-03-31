@@ -1,30 +1,45 @@
 import React from 'react';
-import { Card, CardHeader, CardContent, CardActions, Divider, Stack, Skeleton } from '@mui/material';
 
 const PostSkeleton = () => (
-  <Card sx={{ borderRadius: 3, boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-    <CardHeader
-      avatar={<Skeleton variant="circular" width={40} height={40} />}
-      title={<Skeleton variant="text" width="40%" height={20} />}
-      subheader={<Skeleton variant="text" width="30%" height={15} />}
-    />
-    <CardContent>
-      <Skeleton variant="rectangular" width="100%" height={200} sx={{ borderRadius: 2, mb: 2 }} />
-      <Skeleton variant="text" width="60%" height={25} sx={{ mb: 2 }} />
-      <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
-        <Skeleton variant="rounded" width={60} height={32} />
-        <Skeleton variant="rounded" width={60} height={32} />
-        <Skeleton variant="rounded" width={100} height={32} />
-      </Stack>
-      <Skeleton variant="text" width="90%" height={20} />
-      <Skeleton variant="text" width="80%" height={20} />
-    </CardContent>
-    <Divider sx={{ mx: 2 }} />
-    <CardActions sx={{ px: 2, justifyContent: 'space-around' }}>
-      <Skeleton variant="text" width="30%" height={40} />
-      <Skeleton variant="text" width="30%" height={40} />
-    </CardActions>
-  </Card>
+  <div className="bg-white rounded-xl overflow-hidden border border-solid border-outline-variant shadow-sm animate-pulse">
+    {/* Image Header Skeleton */}
+    <div className="h-64 bg-slate-100" />
+
+    <div className="p-5">
+      {/* User Info Skeleton */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-slate-100" />
+          <div className="space-y-1.5">
+            <div className="h-3 w-24 bg-slate-100 rounded" />
+            <div className="h-2 w-16 bg-slate-50 rounded" />
+          </div>
+        </div>
+      </div>
+
+      {/* Content Skeleton */}
+      <div className="h-5 w-3/4 bg-slate-100 rounded mb-4" />
+      
+      <div className="flex gap-2 mb-4">
+        <div className="h-6 w-12 bg-slate-100 rounded" />
+        <div className="h-6 w-12 bg-slate-100 rounded" />
+      </div>
+
+      <div className="space-y-2 mb-4">
+        <div className="h-3 w-full bg-slate-50 rounded" />
+        <div className="h-3 w-5/6 bg-slate-50 rounded" />
+      </div>
+
+      {/* Interactions Skeleton */}
+      <div className="flex items-center justify-between border-0 border-t border-solid border-slate-50 pt-4">
+        <div className="flex items-center gap-4">
+          <div className="h-4 w-12 bg-slate-100 rounded" />
+          <div className="h-4 w-12 bg-slate-100 rounded" />
+        </div>
+        <div className="h-4 w-4 bg-slate-100 rounded" />
+      </div>
+    </div>
+  </div>
 );
 
 export default PostSkeleton;

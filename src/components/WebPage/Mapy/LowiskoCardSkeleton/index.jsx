@@ -1,24 +1,22 @@
 import React from 'react';
-import { Box, Skeleton, Divider } from '@mui/material';
 
 const LowiskoCardSkeleton = () => (
-  <Box
-    sx={{
-      borderRadius: 3,
-      p: 2,
-      border: '1px solid',
-      borderColor: 'divider',
-    }}
-  >
-    <Skeleton variant="text" width="70%" height={28} />
-    <Skeleton variant="text" width="100%" height={18} sx={{ mt: 0.5 }} />
-    <Skeleton variant="text" width="90%" height={18} />
-    <Divider sx={{ my: 1 }} />
-    <Skeleton variant="text" width="50%" height={18} />
-    <Skeleton variant="text" width="40%" height={18} sx={{ mt: 0.5 }} />
-    <Skeleton variant="rounded" width={80} height={24} sx={{ mt: 1 }} />
-    <Skeleton variant="rounded" width="100%" height={36} sx={{ mt: 1.5, borderRadius: 2 }} />
-  </Box>
+  <div className="p-4 bg-white rounded-xl border border-solid border-outline-variant animate-pulse">
+    <div className="flex justify-between items-start mb-2">
+      <div className="h-6 w-1/2 bg-slate-100 rounded" />
+      <div className="h-5 w-12 bg-slate-50 rounded-full" />
+    </div>
+    
+    <div className="space-y-2 mb-4">
+      <div className="h-3 w-full bg-slate-50 rounded" />
+      <div className="h-3 w-5/6 bg-slate-50 rounded" />
+    </div>
+
+    <div className="flex items-center gap-3">
+      <div className="flex-grow h-10 bg-slate-100 rounded-lg" />
+      <div className="w-10 h-10 bg-slate-100 rounded-lg" />
+    </div>
+  </div>
 );
 
 export default LowiskoCardSkeleton;
