@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import { Button, Stack, TextField, Typography } from '@mui/material';
+import { Button, Stack, TextField, Typography, Checkbox, FormControlLabel } from '@mui/material';
 import { useAuth } from '../../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ const SignComponent = ({SignType}) => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState(false);
     const [seePassword, setSeePassword] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
     const { signIn, signUp } = useAuth();
     const navigate = useNavigate();
   return (
@@ -24,37 +25,40 @@ const SignComponent = ({SignType}) => {
                 {SignType}
                 </Typography>
                 <TextField label="Email" variant="outlined" fullWidth margin="normal" onChange={(e) => setEmail(e.target.value)} />
-                <TextField label="Password" variant="outlined" fullWidth margin="normal" error={error} type="password" onChange={(e) => setPassword(e.target.value)} >
-                    <Button onClick={() => setSeePassword(!seePassword)}>
-                        {seePassword ? "Hide" : "Show"}
-                    </Button>
-                </TextField>
-                {SignType === "Rejestracja" && (
-                    <TextField label="Confirm Password" variant="outlined" fullWidth margin="normal" error={error} type="password" onChange={(e) => setConfirmPassword(e.target.value)}>
-                        <Button onClick={() => setSeePassword(!seePassword)}>
-                            {seePassword ? "Hide" : "Show"}
-                        </Button>
-                    </TextField>
+                <TextField label="Password" variant="outlined" fullWidth margin="normal" error={error} type="password" onChange={(e) => setPassword(e.target.value)} />
+                
+                {SignType === "Logowanie" && (
+                    <FormControlLabel
+                        control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} color="primary" />}
+                        label="Zapamiętaj mnie"
+                        sx={{ width: '100%' }}
+                    />
                 )}
+
+                {SignType === "Rejestracja" && (
+                    <TextField label="Confirm Password" variant="outlined" fullWidth margin="normal" error={error} type="password" onChange={(e) => setConfirmPassword(e.target.value)} />
+                )}
+                
                 <Button variant="contained" color="primary" fullWidth onClick={async () => {
                     if(SignType === "Logowanie" ) {
                         try {
-                            await signIn(email, password);
+                            await signIn(email, password, rememberMe);
                             navigate('/webpage');
                         } catch (error) {
-                            alert("Error signing in: " + error.response.data.message);
+                            alert("Błąd logowania: " + (error.response?.data?.message || error.message));
                         }
                     }
                     else {
                         if(password !== confirmPassword) {
-                            setError(true)
+                            setError(true);
+                            alert("Hasła się nie zgadzają!");
                             return;
                         }
                         try {
                             await signUp(email, password);
                             navigate('/webpage');
                         } catch (error) {
-                            alert("Error signing up: " + error.response.data.message);
+                            alert("Błąd rejestracji: " + (error.response?.data?.message || error.message));
                         }
                     }
                 }}>
