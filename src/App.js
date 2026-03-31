@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Mapy from './components/WebPage/Mapy';
 import MojeLowiska from './components/WebPage/Mojelowiska';
 import Profil from './components/WebPage/Profil'; 
+import Portal from './components/WebPage/Portal';
+import KupLicencje from './components/WebPage/KupLicencje';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './context/AuthContext';
 import { Navigate } from 'react-router-dom';
@@ -85,6 +87,8 @@ function App() {
         <Route path="/mapy" element={<ProtectedRoute><Mapy /></ProtectedRoute>} />
         <Route path="/profil" element={<ProtectedRoute><Profil /></ProtectedRoute>} />
         <Route path="/mojelowiska" element={<ProtectedRoute><MojeLowiska /></ProtectedRoute>} />
+        <Route path="/portal" element={<ProtectedRoute><Portal /></ProtectedRoute>} />
+        <Route path="/kup-licencje" element={<ProtectedRoute><KupLicencje /></ProtectedRoute>} />
       </Routes>
       </AuthProvider>
     </BrowserRouter>
