@@ -11,7 +11,9 @@ import {
   MenuItem,
   TextField,
   InputAdornment,
-  Paper
+  Paper,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import axios from '../../../api/axios';
@@ -26,6 +28,14 @@ const KupLicencje = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchQuery] = useState('');
   const [filterOkreg, setFilterOkreg] = useState('all');
+
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'info'
+  });
+
+  const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,7 +70,11 @@ const KupLicencje = () => {
   });
 
   const handleBuy = async (licencjaId) => {
-    alert(`Dziękujemy za zakup! Funkcjonalność płatności zostanie dodana wkrótce.`);
+    setSnackbar({
+      open: true,
+      message: 'Dziękujemy za zakup! Funkcjonalność płatności zostanie dodana wkrótce.',
+      severity: 'success'
+    });
   };
 
   return (
@@ -151,6 +165,13 @@ const KupLicencje = () => {
           </Grid>
         )}
       </Container>
+
+      {/* Notification Snackbar */}
+      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

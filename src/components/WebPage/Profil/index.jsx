@@ -5,6 +5,7 @@ import { useAuth } from '../../../context/AuthContext';
 import axios from '../../../api/axios';
 import './pr0fil.css';
 import '../WebPage.css';
+import { Snackbar, Alert, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 
 // Sub-components
 import ProfilSkeleton from './ProfilSkeleton';
@@ -33,6 +34,19 @@ const Profil = () => {
     nrKartyPZW: '',
     lokalizacja: ''
   });
+
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'info'
+  });
+
+  const [confirmDialog, setConfirmDialog] = useState({
+    open: false,
+    postId: null
+  });
+
+  const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -77,18 +91,24 @@ const Profil = () => {
       setUserData(response.data.user);
       updateUser(response.data.user);
       handleEditClose();
+      setSnackbar({ open: true, message: 'Twój profil został zaktualizowany!', severity: 'success' });
     } catch (err) {
-      alert('Błąd podczas aktualizacji danych: ' + (err.response?.data?.message || err.message));
+      setSnackbar({ open: true, message: 'Nie udało się zapisać zmian. Spróbuj ponownie.', severity: 'error' });
     }
   };
 
-  const handleDeletePost = async (postId) => {
-    if (!window.confirm("Czy na pewno chcesz usunąć ten post?")) return;
+  const handleDeleteClick = (postId) => {
+    setConfirmDialog({ open: true, postId });
+  };
+
+  const handleDeleteConfirm = async () => {
     try {
-      await axios.delete(`/portal/delete/${postId}`);
-      setUserPosts(userPosts.filter(p => p._id !== postId));
+      await axios.delete(`/portal/delete/${confirmDialog.postId}`);
+      setUserPosts(userPosts.filter(p => p._id !== confirmDialog.postId));
+      setConfirmDialog({ open: false, postId: null });
+      setSnackbar({ open: true, message: 'Post został usunięty.', severity: 'success' });
     } catch (err) {
-      alert('Błąd podczas usuwania posta: ' + (err.response?.data?.message || err.message));
+      setSnackbar({ open: true, message: 'Wystąpił problem przy usuwaniu postu.', severity: 'error' });
     }
   };
 
@@ -124,7 +144,7 @@ const Profil = () => {
               userPosts={userPosts} 
               isOwner={isOwner} 
               userData={userData} 
-              onDeletePost={handleDeletePost} 
+              onDeletePost={handleDeleteClick} 
             />
           </div>
         )}
@@ -139,6 +159,27 @@ const Profil = () => {
           onSave={handleUpdateUser} 
         />
       )}
+
+      {/* Confirmation Dialog */}
+      <Dialog open={confirmDialog.open} onClose={() => setConfirmDialog({ open: false, postId: null })}>
+        <DialogTitle>Usunąć post?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Czy na pewno chcesz usunąć ten post? Tej operacji nie można cofnąć.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmDialog({ open: false, postId: null })} color="inherit">Anuluj</Button>
+          <Button onClick={handleDeleteConfirm} color="error" variant="contained">Usuń</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Notification Snackbar */}
+      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

@@ -18,6 +18,13 @@ import {
   IconButton,
   Chip,
   Skeleton,
+  Snackbar,
+  Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
@@ -35,6 +42,19 @@ const Friends = () => {
   const [pendingRequests, setPendingRequests] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'info'
+  });
+
+  const [confirmDialog, setConfirmDialog] = useState({
+    open: false,
+    friendId: null
+  });
+
+  const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
 
   const fetchFriendsData = async () => {
     try {
@@ -60,9 +80,9 @@ const Friends = () => {
     try {
       await axios.post(`/friends/request/${targetId}`);
       setSuggestions(suggestions.filter(s => s._id !== targetId));
-      alert('Zaproszenie wysłane!');
+      setSnackbar({ open: true, message: 'Zaproszenie wysłane!', severity: 'success' });
     } catch (err) {
-      alert(err.response?.data?.message || 'Błąd wysyłania zaproszenia');
+      setSnackbar({ open: true, message: 'Nie udało się wysłać zaproszenia. Spróbuj później.', severity: 'error' });
     }
   };
 
@@ -71,8 +91,9 @@ const Friends = () => {
       const response = await axios.post(`/friends/accept/${requesterId}`);
       updateUser(response.data.user);
       fetchFriendsData();
+      setSnackbar({ open: true, message: 'Zaproszenie zostało zaakceptowane!', severity: 'success' });
     } catch (err) {
-      alert('Błąd podczas akceptowania zaproszenia');
+      setSnackbar({ open: true, message: 'Wystąpił problem przy akceptowaniu zaproszenia.', severity: 'error' });
     }
   };
 
@@ -81,19 +102,25 @@ const Friends = () => {
       const response = await axios.post(`/friends/decline/${requesterId}`);
       updateUser(response.data.user);
       fetchFriendsData();
+      setSnackbar({ open: true, message: 'Zaproszenie zostało odrzucone.', severity: 'info' });
     } catch (err) {
-      alert('Błąd podczas odrzucania zaproszenia');
+      setSnackbar({ open: true, message: 'Wystąpił problem przy odrzucaniu zaproszenia.', severity: 'error' });
     }
   };
 
-  const handleRemoveFriend = async (friendId) => {
-    if (!window.confirm("Czy na pewno chcesz usunąć tę osobę ze znajomych?")) return;
+  const handleRemoveClick = (friendId) => {
+    setConfirmDialog({ open: true, friendId });
+  };
+
+  const handleRemoveConfirm = async () => {
     try {
-      const response = await axios.delete(`/friends/${friendId}`);
+      const response = await axios.delete(`/friends/${confirmDialog.friendId}`);
       updateUser(response.data.user);
       fetchFriendsData();
+      setConfirmDialog({ open: false, friendId: null });
+      setSnackbar({ open: true, message: 'Osoba została usunięta ze znajomych.', severity: 'success' });
     } catch (err) {
-      alert('Błąd podczas usuwania znajomego');
+      setSnackbar({ open: true, message: 'Nie udało się usunąć znajomego.', severity: 'error' });
     }
   };
 
@@ -141,7 +168,7 @@ const Friends = () => {
           </Stack>
         )}
         {type === 'friend' && (
-          <IconButton color="error" size="small" onClick={() => handleRemoveFriend(person._id)}>
+          <IconButton color="error" size="small" onClick={() => handleRemoveClick(person._id)}>
             <PersonRemoveIcon />
           </IconButton>
         )}
@@ -224,6 +251,27 @@ const Friends = () => {
           </Grid>
         </Grid>
       </Container>
+
+      {/* Confirmation Dialog */}
+      <Dialog open={confirmDialog.open} onClose={() => setConfirmDialog({ open: false, friendId: null })}>
+        <DialogTitle>Usunąć znajomego?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Czy na pewno chcesz usunąć tę osobę ze znajomych?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmDialog({ open: false, friendId: null })} color="inherit">Anuluj</Button>
+          <Button onClick={handleRemoveConfirm} color="error" variant="contained">Usuń</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Notification Snackbar */}
+      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

@@ -7,6 +7,13 @@ import {
   Avatar,
   Button,
   Stack,
+  Snackbar,
+  Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 import { useAuth } from '../../../context/AuthContext';
 import axios from '../../../api/axios';
@@ -32,6 +39,19 @@ const Portal = () => {
     opis: '',
     zdjecie: '',
   });
+
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'info'
+  });
+
+  const [confirmDialog, setConfirmDialog] = useState({
+    open: false,
+    postId: null
+  });
+
+  const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
 
   const fetchPosts = async () => {
     setIsLoading(true);
@@ -93,8 +113,9 @@ const Portal = () => {
       });
       handleClose();
       fetchPosts();
+      setSnackbar({ open: true, message: 'Post dodany pomyślnie!', severity: 'success' });
     } catch (err) {
-      alert('Błąd podczas dodawania posta: ' + (err.response?.data?.message || err.message));
+      setSnackbar({ open: true, message: 'Nie udało się dodać Twojego postu. Spróbuj jeszcze raz.', severity: 'error' });
     }
   };
 
@@ -103,8 +124,9 @@ const Portal = () => {
       const response = await axios.put(`/portal/update/edit/${editingPost._id}`, newPost);
       setPosts(posts.map(p => p._id === editingPost._id ? response.data.post : p));
       handleEditClose();
+      setSnackbar({ open: true, message: 'Post zaktualizowany!', severity: 'success' });
     } catch (err) {
-      alert('Błąd podczas edycji posta: ' + (err.response?.data?.message || err.message));
+      setSnackbar({ open: true, message: 'Coś poszło nie tak przy zapisywaniu zmian. Spróbuj ponownie.', severity: 'error' });
     }
   };
 
@@ -132,22 +154,27 @@ const Portal = () => {
     }
   };
 
-  const handleDelete = async (postId) => {
-    if (!window.confirm("Czy na pewno chcesz usunąć ten post?")) return;
+  const handleDeleteClick = (postId) => {
+    setConfirmDialog({ open: true, postId });
+  };
+
+  const handleDeleteConfirm = async () => {
     try {
-      await axios.delete(`/portal/delete/${postId}`);
-      setPosts(posts.filter(p => p._id !== postId));
+      await axios.delete(`/portal/delete/${confirmDialog.postId}`);
+      setPosts(posts.filter(p => p._id !== confirmDialog.postId));
+      setConfirmDialog({ open: false, postId: null });
+      setSnackbar({ open: true, message: 'Post został usunięty.', severity: 'success' });
     } catch (err) {
-      alert('Błąd podczas usuwania posta: ' + (err.response?.data?.message || err.message));
+      setSnackbar({ open: true, message: 'Wystąpił problem przy usuwaniu postu.', severity: 'error' });
     }
   };
 
   const handleAddFriend = async (targetId) => {
     try {
       await axios.post(`/friends/request/${targetId}`);
-      alert('Zaproszenie wysłane!');
+      setSnackbar({ open: true, message: 'Zaproszenie wysłane!', severity: 'success' });
     } catch (err) {
-      alert(err.response?.data?.message || 'Błąd wysyłania zaproszenia');
+      setSnackbar({ open: true, message: 'Nie udało się wysłać zaproszenia. Spróbuj później.', severity: 'error' });
     }
   };
 
@@ -197,7 +224,7 @@ const Portal = () => {
                 currentUser={user} 
                 onLike={() => handleLike(post._id)}
                 onComment={(tekst) => handleComment(post._id, tekst)}
-                onDelete={() => handleDelete(post._id)}
+                onDelete={() => handleDeleteClick(post._id)}
                 onEdit={() => handleEditOpen(post)}
                 onAddFriend={() => handleAddFriend(post.uzytkownik?._id)}
               />
@@ -231,6 +258,27 @@ const Portal = () => {
         mode="edit"
         onImageChange={handleImageChange}
       />
+
+      {/* Confirmation Dialog */}
+      <Dialog open={confirmDialog.open} onClose={() => setConfirmDialog({ open: false, postId: null })}>
+        <DialogTitle>Usunąć post?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Czy na pewno chcesz usunąć ten post? Tej operacji nie można cofnąć.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmDialog({ open: false, postId: null })} color="inherit">Anuluj</Button>
+          <Button onClick={handleDeleteConfirm} color="error" variant="contained">Usuń</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Notification Snackbar */}
+      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

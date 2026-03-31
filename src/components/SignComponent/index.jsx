@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import { Button, Stack, TextField, Typography, Checkbox, FormControlLabel, IconButton, InputAdornment } from '@mui/material';
+import { Button, Stack, TextField, Typography, Checkbox, FormControlLabel, IconButton, InputAdornment, Snackbar, Alert } from '@mui/material';
 import { useAuth } from '../../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import Visibility from '@mui/icons-material/Visibility';
@@ -15,6 +15,14 @@ const SignComponent = ({SignType}) => {
     const [rememberMe, setRememberMe] = useState(false);
     const { signIn, signUp } = useAuth();
     const navigate = useNavigate();
+
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        message: '',
+        severity: 'error'
+    });
+
+    const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
@@ -98,20 +106,32 @@ const SignComponent = ({SignType}) => {
                             await signIn(email, password, rememberMe);
                             navigate('/webpage');
                         } catch (error) {
-                            alert("Błąd logowania: " + (error.response?.data?.message || error.message));
+                            setSnackbar({
+                                open: true,
+                                message: "Nie udało się zalogować. Sprawdź e-mail i hasło.",
+                                severity: 'error'
+                            });
                         }
                     }
                     else {
                         if(password !== confirmPassword) {
                             setError(true);
-                            alert("Hasła się nie zgadzają!");
+                            setSnackbar({
+                                open: true,
+                                message: "Hasła muszą być identyczne.",
+                                severity: 'error'
+                            });
                             return;
                         }
                         try {
                             await signUp(email, password, rememberMe);
                             navigate('/webpage');
                         } catch (error) {
-                            alert("Błąd rejestracji: " + (error.response?.data?.message || error.message));
+                            setSnackbar({
+                                open: true,
+                                message: "Coś poszło nie tak przy zakładaniu konta. Spróbuj ponownie później.",
+                                severity: 'error'
+                            });
                         }
                     }
                 }}
@@ -119,6 +139,13 @@ const SignComponent = ({SignType}) => {
                 >
                     {SignType}
                 </Button>
+
+                <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+                    <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+                        {snackbar.message}
+                    </Alert>
+                </Snackbar>
+
                 {SignType === "Logowanie" ? (
                     <Typography variant="body2" align="center" sx={{ mt: 2 }}>
                         Nie masz konta? <Link to="/signup" style={{ color: '#2e7d32', fontWeight: 'bold', textDecoration: 'none' }}>Zarejestruj się.</Link>
