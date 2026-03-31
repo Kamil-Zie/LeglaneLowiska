@@ -54,10 +54,16 @@ const KupLicencje = () => {
   }, []);
 
   const filteredLicencje = licencje.filter(lic => {
-    const okreg = okregi.find(o => o._id === lic.idOkreguPZW);
-    const matchesSearch = okreg?.nazwa.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         (lic.opis && lic.opis.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesOkreg = filterOkreg === 'all' || lic.idOkreguPZW === filterOkreg;
+    const licOkregId = lic.idOkregu || lic.idOkreguPZW;
+    const okreg = okregi.find(o => o._id === licOkregId);
+    
+    const okregNazwa = okreg?.nazwa?.toLowerCase() || '';
+    const licOpis = lic.opis?.toLowerCase() || '';
+    const searchLower = searchTerm.toLowerCase();
+
+    const matchesSearch = okregNazwa.includes(searchLower) || licOpis.includes(searchLower);
+    const matchesOkreg = filterOkreg === 'all' || licOkregId === filterOkreg;
+    
     return matchesSearch && matchesOkreg;
   });
 
@@ -130,7 +136,8 @@ const KupLicencje = () => {
         ) : (
           <Grid container spacing={3}>
             {filteredLicencje.map((lic) => {
-              const okreg = okregi.find(o => o._id === lic.idOkreguPZW);
+              const licOkregId = lic.idOkregu || lic.idOkreguPZW;
+              const okreg = okregi.find(o => o._id === licOkregId);
               return (
                 <Grid item key={lic._id} xs={12} sm={6} md={4} sx={{ display: 'flex' }}>
                   <Card sx={{ 
