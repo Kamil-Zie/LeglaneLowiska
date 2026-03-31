@@ -5,28 +5,49 @@ import { useAuth } from '../../../context/AuthContext';
 import axios from '../../../api/axios';
 import '../WebPage.css';
 import Avatar from '@mui/material/Avatar';
-import { Box, Skeleton, Typography, Paper, Divider, Stack, IconButton, Chip } from '@mui/material';
+import { 
+  Box, 
+  Skeleton, 
+  Typography, 
+  Paper, 
+  Divider, 
+  Stack, 
+  IconButton, 
+  Chip,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField
+} from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditIcon from '@mui/icons-material/Edit';
 
+/* ─── Skeleton that mirrors the real profile layout ─── */
 const ProfilSkeleton = () => (
   <div className="profil-wrapper">
     <div className="profil-card">
 
+      {/* Avatar circle */}
       <div className="profil-header">
         <div className="avatar-placeholder">
           <Skeleton variant="circular" width={150} height={150} />
         </div>
       </div>
 
+      {/* Name */}
       <div className="profil-name">
         <Skeleton variant="text" width={180} height={40} sx={{ mx: 'auto' }} />
       </div>
 
+      {/* Description */}
       <div className="profil-description">
         <Skeleton variant="text" width={280} height={22} sx={{ mx: 'auto' }} />
         <Skeleton variant="text" width={220} height={22} sx={{ mx: 'auto' }} />
       </div>
 
+      {/* Info rows */}
       <div className="profil-body">
         {Array.from({ length: 4 }).map((_, i) => (
           <div className="info-item" key={i}>
@@ -37,10 +58,12 @@ const ProfilSkeleton = () => (
       </div>
     </div>
 
+    {/* Badge */}
     <div className="badge-list">
       <Skeleton variant="rounded" width={110} height={36} sx={{ borderRadius: '50px' }} />
     </div>
 
+    {/* Stats grid */}
     <section className="stats-grid">
       {Array.from({ length: 3 }).map((_, i) => (
         <div className="stat-box" key={i}>
@@ -52,14 +75,22 @@ const ProfilSkeleton = () => (
   </div>
 );
 
-const ProfilContent = ({ userData, userPosts, onDeletePost }) => {
+/* ─── Real profile content ─── */
+const ProfilContent = ({ userData, userPosts, onDeletePost, onEdit }) => {
   const recordPost = userPosts.length > 0 
     ? userPosts.reduce((prev, current) => (parseFloat(prev.waga) > parseFloat(current.waga)) ? prev : current)
     : null;
 
   return (
     <div className="profil-wrapper">
-      <div className="profil-card">
+      <div className="profil-card" style={{ position: 'relative' }}>
+        <IconButton 
+          onClick={onEdit} 
+          sx={{ position: 'absolute', top: 10, right: 10, color: '#1a5275' }}
+        >
+          <EditIcon />
+        </IconButton>
+        
         <div className="profil-header">
           <div className="avatar-placeholder">
             <Avatar sx={{ bgcolor: '#1a5275', width: 150, height: 150, fontSize: 60 }}>
@@ -187,21 +218,27 @@ const ProfilContent = ({ userData, userPosts, onDeletePost }) => {
   );
 };
 
+/* ─── Page ─── */
 const Profil = () => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const [userData, setUserData] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [editOpen, setEditOpen] = useState(false);
+  const [editData, setEditData] = useState({
+    nazwa: '',
+    email: '',
+    miasto: '',
+    opis: '',
+    nrKartyPZW: '',
+    lokalizacja: ''
+  });
 
   const fetchData = async () => {
     try {
-      // Fetch User Info
       const userRes = await axios.get(`/users/${user._id}`);
       setUserData(userRes.data.user);
-
-      // Fetch All Posts and filter for the user
-      // Ideally, the backend would have a /portal/posts/user/:id endpoint, 
-      // but for now we filter the existing list.
+      
       const postsRes = await axios.get('/portal/posts');
       const filteredPosts = postsRes.data.posts.filter(p => 
         (p.uzytkownik?._id === user._id) || (p.uzytkownik === user._id)
@@ -218,6 +255,31 @@ const Profil = () => {
   useEffect(() => {
     fetchData();
   }, [user._id]);
+
+  const handleEditOpen = () => {
+    setEditData({
+      nazwa: userData.nazwa || '',
+      email: userData.email || '',
+      miasto: userData.miasto || '',
+      opis: userData.opis || '',
+      nrKartyPZW: userData.nrKartyPZW || '',
+      lokalizacja: userData.lokalizacja || ''
+    });
+    setEditOpen(true);
+  };
+
+  const handleEditClose = () => setEditOpen(false);
+
+  const handleUpdateUser = async () => {
+    try {
+      const response = await axios.put(`/users/update/${user._id}`, editData);
+      setUserData(response.data.user);
+      updateUser(response.data.user);
+      handleEditClose();
+    } catch (err) {
+      alert('Błąd podczas aktualizacji danych: ' + (err.response?.data?.message || err.message));
+    }
+  };
 
   const handleDeletePost = async (postId) => {
     if (!window.confirm("Czy na pewno chcesz usunąć ten post?")) return;
@@ -240,9 +302,68 @@ const Profil = () => {
             userData={userData} 
             userPosts={userPosts} 
             onDeletePost={handleDeletePost}
+            onEdit={handleEditOpen}
           />
         )}
       </div>
+
+      {/* Edit Profile Dialog */}
+      <Dialog open={editOpen} onClose={handleEditClose} fullWidth maxWidth="sm">
+        <DialogTitle sx={{ textAlign: 'center', fontWeight: 'bold' }}>Edytuj Profil</DialogTitle>
+        <Divider />
+        <DialogContent>
+          <Stack spacing={2} sx={{ mt: 1 }}>
+            <TextField 
+              label="Nazwa użytkownika" 
+              fullWidth 
+              value={editData.nazwa} 
+              onChange={(e) => setEditData({ ...editData, nazwa: e.target.value })} 
+            />
+            <TextField 
+              label="Email" 
+              fullWidth 
+              value={editData.email} 
+              onChange={(e) => setEditData({ ...editData, email: e.target.value })} 
+            />
+            <TextField 
+              label="Miasto" 
+              fullWidth 
+              value={editData.miasto} 
+              onChange={(e) => setEditData({ ...editData, miasto: e.target.value })} 
+            />
+            <TextField 
+              label="Lokalizacja (dokładniejsza)" 
+              fullWidth 
+              value={editData.lokalizacja} 
+              onChange={(e) => setEditData({ ...editData, lokalizacja: e.target.value })} 
+            />
+            <TextField 
+              label="Nr Karty PZW" 
+              fullWidth 
+              value={editData.nrKartyPZW} 
+              onChange={(e) => setEditData({ ...editData, nrKartyPZW: e.target.value })} 
+            />
+            <TextField 
+              label="Opis" 
+              multiline 
+              rows={3} 
+              fullWidth 
+              value={editData.opis} 
+              onChange={(e) => setEditData({ ...editData, opis: e.target.value })} 
+            />
+          </Stack>
+        </DialogContent>
+        <DialogActions sx={{ p: 2 }}>
+          <Button onClick={handleEditClose} color="inherit">Anuluj</Button>
+          <Button 
+            variant="contained" 
+            onClick={handleUpdateUser}
+            disabled={!editData.nazwa || !editData.email}
+          >
+            Zapisz zmiany
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
