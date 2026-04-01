@@ -55,7 +55,6 @@ const SignComponent = ({SignType}) => {
 
   return (
     <div className="min-h-screen relative flex items-center justify-center overflow-hidden bg-surface dark:bg-slate-950 font-body transition-colors duration-500">
-        {/* Background Image with Blur */}
         <div 
             className="absolute inset-0 z-0 scale-110"
             style={{
@@ -66,11 +65,9 @@ const SignComponent = ({SignType}) => {
             }} 
         />
 
-        {/* Auth Card */}
         <div className="relative z-10 w-full max-w-md mx-4">
             <div className="bg-white/10 dark:bg-black/20 backdrop-blur-3xl border border-solid border-white/20 dark:border-white/10 p-10 rounded-[2.5rem] shadow-2xl flex flex-col gap-8 transition-all">
                 
-                {/* Logo & Branding */}
                 <div className="flex flex-col items-center gap-4">
                     <div className="w-24 h-24 bg-white/10 rounded-3xl p-5 backdrop-blur-md border border-solid border-white/10 flex items-center justify-center shadow-inner">
                         <img src="logo.svg" alt="Logo" className="w-full h-full" />
@@ -87,7 +84,7 @@ const SignComponent = ({SignType}) => {
                         <input 
                             type="email"
                             placeholder="twoj@email.pl"
-                            className="w-full bg-white/5 border border-solid border-white/10 rounded-2xl px-6 py-4 text-sm text-white placeholder:text-white/20 outline-none focus:ring-2 focus:ring-sky-400/50 focus:bg-white/10 transition-all font-bold"
+                            className="w-full bg-white/5 border border-solid border-white/10 rounded-2xl px-2 py-4 text-sm text-white placeholder:text-white/20 outline-none focus:ring-2 focus:ring-sky-400/50 focus:bg-white/10 transition-all font-bold"
                             onChange={(e) => setEmail(e.target.value)} 
                         />
                     </div>
@@ -98,7 +95,7 @@ const SignComponent = ({SignType}) => {
                             <input 
                                 type={showPassword ? 'text' : 'password'} 
                                 placeholder="••••••••"
-                                className="w-full bg-white/5 border border-solid border-white/10 rounded-2xl px-6 py-4 text-sm text-white placeholder:text-white/20 outline-none focus:ring-2 focus:ring-sky-400/50 focus:bg-white/10 transition-all font-bold"
+                                className="w-full bg-white/5 border border-solid border-white/10 rounded-2xl px-2 py-4 text-sm text-white placeholder:text-white/20 outline-none focus:ring-2 focus:ring-sky-400/50 focus:bg-white/10 transition-all font-bold"
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                             <button 
@@ -119,7 +116,7 @@ const SignComponent = ({SignType}) => {
                                 <input 
                                     type={showConfirmPassword ? 'text' : 'password'} 
                                     placeholder="••••••••"
-                                    className="w-full bg-white/5 border border-solid border-white/10 rounded-2xl px-6 py-4 text-sm text-white placeholder:text-white/20 outline-none focus:ring-2 focus:ring-sky-400/50 focus:bg-white/10 transition-all font-bold"
+                                    className="w-full bg-white/5 border border-solid border-white/10 rounded-2xl px-2 py-4 text-sm text-white placeholder:text-white/20 outline-none focus:ring-2 focus:ring-sky-400/50 focus:bg-white/10 transition-all font-bold"
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                 />
                                 <button 
@@ -152,7 +149,6 @@ const SignComponent = ({SignType}) => {
                     </div>
                 </div>
 
-                {/* Cloudflare Turnstile */}
                 <div className="flex justify-center bg-white/5 py-4 rounded-2xl border border-solid border-white/10 shadow-inner">
                     <div 
                         className="cf-turnstile scale-90" 

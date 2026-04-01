@@ -1,26 +1,21 @@
-FROM node:18-alpine AS build
-
-WORKDIR /app
-
-COPY package*.json ./
+# Stage 1: Build React frontend
+FROM node:22-alpine AS frontend-build
+WORKDIR /frontend
+COPY frontend/package*.json ./
 RUN npm ci
-
-COPY . .
-
-ARG REACT_APP_MAPBOX_TOKEN
-ARG REACT_APP_GOOGLEMAPS_TOKEN
-ARG REACT_APP_MAP_ID
-
-ENV REACT_APP_MAPBOX_TOKEN=$REACT_APP_MAPBOX_TOKEN
-ENV REACT_APP_GOOGLEMAPS_TOKEN=$REACT_APP_GOOGLEMAPS_TOKEN
-ENV REACT_APP_MAP_ID=$REACT_APP_MAP_ID
-
+COPY frontend/ .
 RUN npm run build
 
-FROM nginx:alpine
+# Stage 2: Backend
+FROM node:22-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --omit=dev
+COPY . .
 
-COPY --from=build /app/build /usr/share/nginx/html
+# Copy React build into backend
+COPY --from=frontend-build /frontend/build ./client/build
 
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 8080
+ENV PORT=8080
+CMD ["node", "app.js"]

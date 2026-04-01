@@ -1,7 +1,7 @@
 import axiors from "axios";
 
 export default axiors.create({
-    baseURL: "http://localhost:6767/api",
+    baseURL: process.env.REACT_APP_BACKEND_URL,
     headers: {
         'Content-Type': 'application/json'
     },

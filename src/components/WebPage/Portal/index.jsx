@@ -9,6 +9,7 @@ import {
   Snackbar,
   Alert
 } from '@mui/material';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import axios from '../../../api/axios';
 import Navbar from '../NavBar';
@@ -20,6 +21,7 @@ import PostDialog from './PostDialog';
 
 const Portal = () => {
   const { user } = useAuth();
+  const location = useLocation();
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
@@ -172,195 +174,151 @@ const Portal = () => {
     }
   };
 
+  const isActive = (path) => location.pathname === path;
+
   return (
-    <div className="bg-surface dark:bg-slate-950 font-body text-on-surface min-h-screen flex flex-col transition-colors duration-300">
-      <Navbar />
-      
-      <main className="flex-grow w-full max-w-screen-xl mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          
-          {/* Left Column: Profile Quick Stats */}
-          <aside className="hidden lg:block lg:col-span-3 space-y-6">
-            <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-solid border-outline-variant dark:border-slate-800 p-8 shadow-sm sticky top-24">
-              <div className="flex flex-col items-center text-center">
-                <div className="w-24 h-24 rounded-2xl bg-primary-fixed flex items-center justify-center text-primary mb-6 border-4 border-solid border-white dark:border-slate-800 shadow-xl overflow-hidden">
-                  {user.zdjecie ? (
-                    <img src={user.zdjecie} className="w-full h-full object-cover" alt="me" />
-                  ) : (
-                    <span className="text-3xl font-black">{user.nazwa[0]}</span>
-                  )}
-                </div>
-                <h2 className="text-xl font-black text-on-surface dark:text-slate-100 mb-1">{user.imie} {user.nazwisko}</h2>
-                <p className="text-xs text-primary font-bold uppercase tracking-widest mb-6">@{user.nazwa}</p>
-                
-                <div className="grid grid-cols-3 w-full border-0 border-t border-solid border-slate-100 dark:border-slate-800 pt-6">
-                  <div>
-                    <div className="text-lg font-black text-primary dark:text-sky-400">{user.friends?.length || 0}</div>
-                    <div className="text-[10px] text-outline font-bold uppercase tracking-tighter">Znajomi</div>
+    <div className="bg-surface font-body text-on-surface min-h-screen transition-colors duration-300">
+      <style>{`
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
+
+      {/* --- DESKTOP LAYOUT (md and up) --- */}
+      <div className="hidden md:flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-grow w-full max-w-screen-xl mx-auto px-6 py-8">
+          <div className="grid grid-cols-12 gap-8 text-left">
+            <aside className="col-span-3 space-y-6">
+              <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-solid border-outline-variant dark:border-slate-800 p-8 shadow-sm sticky top-24">
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-24 h-24 rounded-2xl bg-primary-fixed flex items-center justify-center text-primary mb-6 border-4 border-solid border-white dark:border-slate-800 shadow-xl overflow-hidden">
+                    {user.zdjecie ? <img src={user.zdjecie} className="w-full h-full object-cover" alt="me" /> : <span className="text-3xl font-black">{user.nazwa[0]}</span>}
                   </div>
-                  <div className="border-0 border-x border-solid border-slate-100 dark:border-slate-800">
-                    <div className="text-lg font-black text-primary dark:text-sky-400">{posts.filter(p => p.uzytkownik?._id === user._id).length}</div>
-                    <div className="text-[10px] text-outline font-bold uppercase tracking-tighter">Posty</div>
-                  </div>
-                  <div>
-                    <div className="text-lg font-black text-primary dark:text-sky-400">{user.ulubioneLowiska?.length || 0}</div>
-                    <div className="text-[10px] text-outline font-bold uppercase tracking-tighter">Ulubione</div>
+                  <h2 className="text-xl font-black text-on-surface dark:text-slate-100 mb-1">{user.imie} {user.nazwisko}</h2>
+                  <p className="text-xs text-primary font-bold uppercase tracking-widest mb-6">@{user.nazwa}</p>
+                  <div className="grid grid-cols-3 w-full border-0 border-t border-solid border-slate-100 dark:border-slate-800 pt-6">
+                    <div><div className="text-lg font-black text-primary">{user.friends?.length || 0}</div><div className="text-[10px] text-outline uppercase font-bold">Znajomi</div></div>
+                    <div><div className="text-lg font-black text-primary">{posts.filter(p => p.uzytkownik?._id === user._id).length}</div><div className="text-[10px] text-outline uppercase font-bold">Posty</div></div>
+                    <div><div className="text-lg font-black text-primary">{user.ulubioneLowiska?.length || 0}</div><div className="text-[10px] text-outline uppercase font-bold">Ulubione</div></div>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="bg-primary-container/10 dark:bg-primary-container/5 p-8 rounded-[2rem] border border-solid border-primary-container/20 dark:border-primary-container/10">
-              <h4 className="text-xs font-black text-primary dark:text-sky-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
-                <span className="material-symbols-outlined text-base">tips_and_updates</span>
-                Wskazówka
-              </h4>
-              <p className="text-sm text-on-surface-variant dark:text-slate-400 leading-relaxed italic m-0">
-                "Pamiętaj o zachowaniu czystości nad wodą. Twoje dzieci też będą chciały tam wędkować!"
-              </p>
-            </div>
-          </aside>
-
-          {/* Center Column: Feed */}
-          <div className="lg:col-span-6 space-y-8">
-            {/* Create Post Header */}
-            <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-solid border-outline-variant dark:border-slate-800 p-6 shadow-sm">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex-shrink-0 flex items-center justify-center text-primary font-black overflow-hidden border-2 border-solid border-white dark:border-slate-700 shadow-sm">
-                  {user.zdjecie ? <img src={user.zdjecie} className="w-full h-full object-cover" alt="me" /> : user.nazwa[0]}
-                </div>
-                <button 
-                  onClick={handleOpen}
-                  className="flex-grow bg-surface-container dark:bg-slate-800 hover:bg-surface-container-high dark:hover:bg-slate-700 transition-colors text-left px-6 py-4 rounded-2xl text-on-surface-variant dark:text-slate-400 text-sm font-bold border-none cursor-pointer"
-                >
-                  Pochwal się swoim połowem, {user.imie}...
-                </button>
-              </div>
-              <div className="flex gap-6 mt-6 pt-6 border-0 border-t border-solid border-slate-50 dark:border-slate-800/50">
-                <button onClick={handleOpen} className="flex items-center gap-2 text-xs font-black text-on-surface-variant dark:text-slate-400 hover:text-primary dark:hover:text-sky-400 transition-colors border-none bg-transparent cursor-pointer uppercase tracking-widest">
-                  <span className="material-symbols-outlined text-secondary">image</span> Zdjęcie
-                </button>
-                <button onClick={handleOpen} className="flex items-center gap-2 text-xs font-black text-on-surface-variant dark:text-slate-400 hover:text-primary dark:hover:text-sky-400 transition-colors border-none bg-transparent cursor-pointer uppercase tracking-widest">
-                  <span className="material-symbols-outlined text-error">location_on</span> Miejsce
-                </button>
-                <button onClick={handleOpen} className="flex items-center gap-2 text-xs font-black text-on-surface-variant dark:text-slate-400 hover:text-primary dark:hover:text-sky-400 transition-colors border-none bg-transparent cursor-pointer uppercase tracking-widest">
-                  <span className="material-symbols-outlined text-primary">sell</span> Ryba
-                </button>
-              </div>
-            </div>
-
-            {/* Posts List */}
-            <div className="space-y-8">
-              {isLoading ? (
-                [1, 2].map((i) => <PostSkeleton key={i} />)
-              ) : posts.length > 0 ? (
-                posts.map((post) => (
-                  <PostCard 
-                    key={post._id} 
-                    post={post} 
-                    currentUser={user} 
-                    onLike={() => handleLike(post._id)}
-                    onComment={(tekst) => handleComment(post._id, tekst)}
-                    onDelete={() => handleDeleteClick(post._id)}
-                    onEdit={() => handleEditOpen(post)}
-                    onAddFriend={() => handleAddFriend(post.uzytkownik?._id)}
-                  />
-                ))
-              ) : (
-                <div className="bg-white dark:bg-slate-900 py-20 text-center rounded-[2.5rem] border border-solid border-outline-variant dark:border-slate-800 shadow-sm">
-                  <span className="material-symbols-outlined text-8xl text-slate-200 dark:text-slate-800 mb-6">phishing</span>
-                  <p className="text-on-surface-variant dark:text-slate-400 font-black text-lg m-0 uppercase tracking-tighter">Brak postów do wyświetlenia</p>
-                  <button 
-                    onClick={handleOpen}
-                    className="mt-8 bg-primary text-white px-10 py-4 rounded-2xl font-black hover:brightness-110 active:scale-95 transition-all border-none cursor-pointer uppercase tracking-widest text-xs shadow-xl shadow-primary/20"
-                  >
-                    Dodaj pierwszy post
+            </aside>
+            <div className="col-span-6 space-y-8">
+              <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-solid border-outline-variant dark:border-slate-800 p-6 shadow-sm">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex-shrink-0 flex items-center justify-center text-primary font-black overflow-hidden border-2 border-solid border-white shadow-sm">
+                    {user.zdjecie ? <img src={user.zdjecie} className="w-full h-full object-cover" alt="me" /> : user.nazwa[0]}
+                  </div>
+                  <button onClick={handleOpen} className="flex-grow bg-surface-container dark:bg-slate-800 hover:bg-surface-container-high text-left px-6 py-4 rounded-2xl text-on-surface-variant text-sm font-bold border-none cursor-pointer">
+                    Co u Ciebie, {user.imie}?
                   </button>
                 </div>
-              )}
-            </div>
-          </div>
-
-          {/* Right Column: Trending */}
-          <aside className="hidden lg:block lg:col-span-3 space-y-6">
-             <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-solid border-outline-variant dark:border-slate-800 p-8 shadow-sm">
-              <h3 className="text-xs font-black text-primary dark:text-sky-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
-                <span className="material-symbols-outlined text-lg">trending_up</span>
-                Popularne gatunki
-              </h3>
-              <div className="space-y-4">
-                {[
-                  { name: 'Szczupak', count: 124 },
-                  { name: 'Okoń', count: 89 },
-                  { name: 'Karp', count: 56 },
-                  { name: 'Sandacz', count: 34 }
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center justify-between group cursor-pointer">
-                    <span className="text-sm font-bold text-on-surface dark:text-slate-300 group-hover:text-primary dark:group-hover:text-sky-400 transition-colors">#{item.name}</span>
-                    <span className="text-[10px] font-black bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg text-slate-500 dark:text-slate-400">+{item.count}</span>
-                  </div>
-                ))}
+              </div>
+              <div className="space-y-8">
+                {isLoading ? [1, 2].map(i => <PostSkeleton key={i} />) : posts.map(post => <PostCard key={post._id} post={post} currentUser={user} onLike={() => handleLike(post._id)} onComment={(tekst) => handleComment(post._id, tekst)} onDelete={() => handleDeleteClick(post._id)} onEdit={() => handleEditOpen(post)} onAddFriend={() => handleAddFriend(post.uzytkownik?._id)} />)}
               </div>
             </div>
+            <aside className="col-span-3 space-y-6">
+              <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-solid border-outline-variant p-8 shadow-sm">
+                <h3 className="text-xs font-black text-primary uppercase tracking-[0.2em] mb-6">Popularne gatunki</h3>
+                <div className="space-y-4">
+                  {[{ name: 'Szczupak', count: 124 }, { name: 'Okoń', count: 89 }].map((item, i) => (
+                    <div key={i} className="flex items-center justify-between group cursor-pointer">
+                      <span className="text-sm font-bold">#{item.name}</span>
+                      <span className="text-[10px] font-black bg-slate-100 px-2.5 py-1 rounded-lg">+{item.count}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </aside>
+          </div>
+        </main>
+      </div>
 
-            <div className="bg-gradient-to-br from-tertiary to-primary text-white p-8 rounded-[2rem] shadow-2xl relative overflow-hidden">
-              <div className="relative z-10">
-                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] opacity-70 mb-3 m-0">Wyzwanie Tygodnia</h3>
-                <h4 className="text-xl font-black mb-4 m-0 leading-tight">Złap największego Okonia!</h4>
-                <p className="text-xs opacity-90 leading-relaxed mb-8 m-0 font-medium">Uczestnicy mają szansę wygrać roczną licencję na dowolne łowisko w okręgu.</p>
-                <button className="w-full bg-white text-primary font-black py-3 rounded-xl text-[10px] uppercase tracking-widest hover:bg-opacity-90 transition-all border-none cursor-pointer shadow-lg">
-                  Szczegóły
+      {/* --- MOBILE LAYOUT (less than md) --- */}
+      <div className="md:hidden flex flex-col min-h-screen pb-24">
+        <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="flex justify-between items-center px-4 h-16 max-w-2xl mx-auto">
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-sky-700">anchor</span>
+              <h1 className="text-xl font-black text-sky-800 dark:text-sky-300 m-0 leading-none">Wędkarz Portal</h1>
+            </div>
+            <Link to="/profil">
+              <div className="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center">
+                <span className="material-symbols-outlined text-on-secondary-container" style={{ fontVariationSettings: "'FILL' 1" }}>person</span>
+              </div>
+            </Link>
+          </div>
+        </header>
+
+        <main className="flex-grow pt-20 px-4 space-y-8 max-w-2xl mx-auto w-full text-left">
+          <section>
+            <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-solid border-outline-variant dark:border-slate-800 p-6 shadow-sm">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-slate-100 flex-shrink-0 flex items-center justify-center text-primary font-black overflow-hidden border-2 border-solid border-white">
+                  {user.zdjecie ? <img src={user.zdjecie} className="w-full h-full object-cover" alt="me" /> : user.nazwa[0]}
+                </div>
+                <button onClick={handleOpen} className="flex-grow bg-surface-container dark:bg-slate-800 hover:bg-surface-container-high text-left px-6 py-4 rounded-2xl text-on-surface-variant text-sm font-bold border-none cursor-pointer">
+                  Co u Ciebie, {user.imie}?
                 </button>
               </div>
-              <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
             </div>
-          </aside>
+          </section>
+          <section className="space-y-8">
+            {isLoading ? [1, 2].map(i => <PostSkeleton key={i} />) : posts.map(post => <PostCard key={post._id} post={post} currentUser={user} onLike={() => handleLike(post._id)} onComment={(tekst) => handleComment(post._id, tekst)} onDelete={() => handleDeleteClick(post._id)} onEdit={() => handleEditOpen(post)} onAddFriend={() => handleAddFriend(post.uzytkownik?._id)} />)}
+          </section>
+        </main>
 
-        </div>
-      </main>
+        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shadow-[0_-1px_3px_0_rgba(0,0,0,0.05)]">
+          <div className="flex justify-around items-center px-2 py-3 pb-safe max-w-2xl mx-auto">
+            <Link to="/webpage" className={`flex flex-col items-center justify-center rounded-xl px-3 py-1 no-underline ${isActive('/webpage') ? 'bg-sky-50 dark:bg-sky-900/30 text-sky-700' : 'text-slate-500'}`}>
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/webpage') ? "'FILL' 1" : "'FILL' 0" }}>home</span>
+              <span className="text-[11px] font-semibold tracking-tight">Start</span>
+            </Link>
+            <Link to="/portal" className={`flex flex-col items-center justify-center rounded-xl px-3 py-1 no-underline ${isActive('/portal') ? 'bg-sky-50 dark:bg-sky-900/30 text-sky-700' : 'text-slate-500'}`}>
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/portal') ? "'FILL' 1" : "'FILL' 0" }}>groups</span>
+              <span className="text-[11px] font-semibold tracking-tight">Portal</span>
+            </Link>
+            <Link to="/mapy" className={`flex flex-col items-center justify-center rounded-xl px-3 py-1 no-underline ${isActive('/mapy') ? 'bg-sky-50 dark:bg-sky-900/30 text-sky-700' : 'text-slate-500'}`}>
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/mapy') ? "'FILL' 1" : "'FILL' 0" }}>map</span>
+              <span className="text-[11px] font-semibold tracking-tight">Mapa</span>
+            </Link>
+            <Link to="/kup-licencje" className={`flex flex-col items-center justify-center rounded-xl px-3 py-1 no-underline ${isActive('/kup-licencje') ? 'bg-sky-50 dark:bg-sky-900/30 text-sky-700' : 'text-slate-500'}`}>
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/kup-licencje') ? "'FILL' 1" : "'FILL' 0" }}>description</span>
+              <span className="text-[11px] font-semibold tracking-tight">Licencje</span>
+            </Link>
+            <Link to="/profil" className={`flex flex-col items-center justify-center rounded-xl px-3 py-1 no-underline ${isActive('/profil') ? 'bg-sky-50 dark:bg-sky-900/30 text-sky-700' : 'text-slate-500'}`}>
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/profil') ? "'FILL' 1" : "'FILL' 0" }}>person</span>
+              <span className="text-[11px] font-semibold tracking-tight">Profil</span>
+            </Link>
+          </div>
+        </nav>
+      </div>
 
-      {/* Dialogs */}
-      <PostDialog 
-        open={open} 
-        onClose={handleClose} 
-        postData={newPost} 
-        setPostData={setNewPost} 
-        onSave={handleCreatePost} 
-        mode="create"
-        onImageChange={handleImageChange}
-      />
-
-      <PostDialog 
-        open={editOpen} 
-        onClose={handleEditClose} 
-        postData={newPost} 
-        setPostData={setNewPost} 
-        onSave={handleUpdatePost} 
-        mode="edit"
-        onImageChange={handleImageChange}
-      />
-
-      <Dialog 
-        open={confirmDialog.open} 
-        onClose={() => setConfirmDialog({ open: false, postId: null })}
-        PaperProps={{ className: 'dark:bg-slate-900 rounded-[2rem] border border-solid dark:border-slate-800 shadow-2xl' }}
-      >
-        <DialogTitle className="font-black text-error px-8 pt-8">Usunąć post?</DialogTitle>
-        <DialogContent className="px-8">
-          <DialogContentText className="dark:text-slate-400 font-medium text-sm">
-            Czy na pewno chcesz usunąć ten post? Tej operacji nie można cofnąć.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions className="p-8 gap-4">
-          <button onClick={() => setConfirmDialog({ open: false, postId: null })} className="flex-grow py-3 text-xs font-black uppercase tracking-widest text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all border-none bg-transparent cursor-pointer">Anuluj</button>
-          <button onClick={handleDeleteConfirm} className="flex-grow py-3 text-xs font-black uppercase tracking-widest bg-error text-white rounded-xl hover:brightness-110 active:scale-95 transition-all border-none cursor-pointer shadow-lg shadow-error/20">Usuń</button>
+      {/* Shared Dialogs & Snackbar */}
+      <PostDialog open={open} onClose={handleClose} postData={newPost} setPostData={setNewPost} onSave={handleCreatePost} mode="create" onImageChange={handleImageChange} />
+      <PostDialog open={editOpen} onClose={handleEditClose} postData={newPost} setPostData={setNewPost} onSave={handleUpdatePost} mode="edit" onImageChange={handleImageChange} />
+      <Dialog open={confirmDialog.open} onClose={() => setConfirmDialog({ open: false, postId: null })} PaperProps={{ sx: { borderRadius: 3 } }}>
+        <DialogTitle sx={{ fontWeight: 900, color: 'error.main' }}>Usunąć post?</DialogTitle>
+        <DialogContent><DialogContentText sx={{ color: 'text.primary', fontWeight: 500 }}>Czy na pewno chcesz usunąć ten post?</DialogContentText></DialogContent>
+        <DialogActions sx={{ p: 3 }}>
+          <Button onClick={() => setConfirmDialog({ open: false, postId: null })} color="inherit">Anuluj</Button>
+          <Button onClick={handleDeleteConfirm} color="error" variant="contained">Usuń</Button>
         </DialogActions>
       </Dialog>
-
       <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} className="rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-2xl">
-          {snackbar.message}
-        </Alert>
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} className="rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-2xl">{snackbar.message}</Alert>
       </Snackbar>
     </div>
   );
