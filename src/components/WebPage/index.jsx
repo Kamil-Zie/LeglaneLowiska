@@ -1,16 +1,16 @@
-import Navbar from './NavBar';
+import Navbar from './NavBar/desktop';
 import { useAuth } from '../../context/AuthContext';
 import { useState, useEffect, useMemo } from 'react';
 import LowiskoCard from './LowiskoCard';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SearchField from './Mapy/SearchField';
 import axios from '../../api/axios';
-import MobileNav from './MobileNav';
+import MobileNav from './NavBar/mobile';
+import MobileHeader from './Header/mobile';
 
 const WebPage = () => {
-  const { user } = useAuth();
+  const { user} = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
   const [suggestedLowiska, setSuggestedLowiska] = useState([]);
   const [okregi, setOkregi] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -37,7 +37,7 @@ const WebPage = () => {
     { label: 'Moje Licencje', icon: 'license', color: 'bg-primary-fixed text-on-primary-fixed', link: '/mojelowiska' },
     { label: 'Dodaj Połów', icon: 'add_circle', color: 'bg-secondary-container text-on-secondary-container', link: '/portal' },
     { label: 'Mapa Łowisk', icon: 'map', color: 'bg-tertiary-fixed text-on-tertiary-fixed', link: '/mapy' },
-    { label: 'Regulaminy', icon: 'gavel', color: 'bg-surface-container-highest text-on-surface-variant', link: '/webpage' }
+    { label: 'Ranking', icon: 'military_tech', color: 'bg-surface-container-highest text-on-surface-variant', link: '/ranking' }
   ], []);
 
   const getPosts = async () =>{
@@ -122,12 +122,7 @@ const WebPage = () => {
 
       {/* --- MOBILE LAYOUT --- */}
       <div className="md:hidden flex flex-col min-h-screen pb-24 text-left">
-        <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm">
-          <div className="flex justify-between items-center px-4 h-16 max-w-2xl mx-auto">
-            <div className="flex items-center gap-2"><span className="material-symbols-outlined text-sky-700">anchor</span><h1 className="text-xl font-black text-sky-800 dark:text-sky-300 m-0">Wędkarz Portal</h1></div>
-            <Link to="/profil"><div className="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center"><span className="material-symbols-outlined text-on-secondary-container" style={{ fontVariationSettings: "'FILL' 1" }}>person</span></div></Link>
-          </div>
-        </header>
+        <MobileHeader />
         <main className="flex-grow pt-20 px-4 space-y-8 max-w-2xl mx-auto w-full">
           <section>
             <div className="flex items-center justify-between mb-4"><h2 className="text-lg font-bold text-sky-700 m-0">Ostatnie połowy</h2><Link to="/portal" className="text-sm font-semibold text-primary underline">Wszystkie</Link></div>

@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Snackbar, Alert } from '@mui/material';
 import axios from '../../../api/axios';
-import Navbar from '../NavBar';
-import MobileNav from '../MobileNav';
-
-// Sub-components
-import LicencjaCard from './LicencjaCard';
-import LicencjaSkeleton from './LicencjaSkeleton';
+import KupLicencjeDesktop from './desktop';
+import KupLicencjeMobile from './mobile';
 
 const KupLicencje = () => {
   const [licencje, setLicencje] = useState([]);
@@ -75,49 +71,28 @@ const KupLicencje = () => {
 
       {/* --- DESKTOP LAYOUT --- */}
       <div className="hidden md:flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-grow">
-          <section className="bg-surface-container-low dark:bg-slate-900 py-16 px-6">
-            <div className="max-w-4xl mx-auto text-left">
-              <h1 className="text-5xl font-black text-primary uppercase m-0">Kup Licencję</h1>
-              <div className="mt-8 flex gap-3">
-                <input className="flex-grow p-4 rounded-xl border-none shadow-lg" placeholder="Szukaj..." value={searchTerm} onChange={e => setSearchQuery(e.target.value)} />
-                <select className="p-4 rounded-xl border-none shadow-lg" value={filterOkreg} onChange={e => setFilterOkreg(e.target.value)}>
-                  <option value="all">Wszystkie Okręgi</option>
-                  {okregi.map(o => <option key={o._id} value={o._id}>{o.nazwa}</option>)}
-                </select>
-              </div>
-            </div>
-          </section>
-          <section className="max-w-screen-2xl mx-auto px-6 py-20">
-            <div className="grid grid-cols-3 gap-8">
-              {isLoading ? Array.from({ length: 6 }).map((_, i) => <LicencjaSkeleton key={i} />) : filtered.map(lic => <LicencjaCard key={lic._id} lic={lic} okreg={okregi.find(o => o._id === (lic.idOkregu || lic.idOkreguPZW))} onBuy={handleBuy} />)}
-            </div>
-          </section>
-        </main>
+        <KupLicencjeDesktop 
+        searchTerm={searchTerm} 
+        setSearchQuery={setSearchQuery} 
+        filterOkreg={filterOkreg} 
+        setFilterOkreg={setFilterOkreg} 
+        okregi={okregi} 
+        isLoading={isLoading} 
+        filtered={filtered} 
+        handleBuy={handleBuy} />
       </div>
 
       {/* --- MOBILE LAYOUT --- */}
       <div className="md:hidden flex flex-col min-h-screen pb-24 text-left">
-        <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 shadow-sm">
-          <div className="flex justify-between items-center px-4 h-16 max-w-2xl mx-auto">
-            <div className="flex items-center gap-2"><span className="material-symbols-outlined text-sky-700">anchor</span><h1 className="text-xl font-black text-sky-800 m-0">Licencje</h1></div>
-          </div>
-        </header>
-        <main className="flex-grow pt-20 px-4 space-y-8 max-w-2xl mx-auto w-full">
-          <div className="flex flex-row">
-            <span className="material-symbols-outlined  py-4 text-outline">search</span>
-            <input className="w-full bg-white dark:bg-slate-800 py-4 border-2 border-outline-variant rounded-xl   pr-4" placeholder="Wyszukaj..." type="text" value={searchTerm} onChange={e => setSearchQuery(e.target.value)} />
-          </div>
-          <div className="flex gap-2 overflow-x-auto hide-scrollbar">
-            <button onClick={() => setFilterType('all')} className={`px-4 py-2 rounded-full font-bold border-none transition-all duration-200 ${filterType === 'all' ? 'bg-primary text-white' : 'bg-slate-100'}`}>Wszystkie</button>
-            <button onClick={() => setFilterType('pzw')} className={`px-4 py-2 rounded-full font-bold border-none transition-all duration-200 ${filterType === 'pzw' ? 'bg-primary text-white' : 'bg-slate-100'}`}>PZW</button>
-          </div>
-          <div className="space-y-6">
-            {isLoading ? Array.from({ length: 3 }).map((_, i) => <LicencjaSkeleton key={i} />) : filtered.map(lic => <LicencjaCard key={lic._id} lic={lic} okreg={okregi.find(o => o._id === (lic.idOkregu || lic.idOkreguPZW))} onBuy={handleBuy} />)}
-          </div>
-        </main>
-        <MobileNav />
+        <KupLicencjeMobile 
+        searchTerm={searchTerm} 
+        setSearchQuery={setSearchQuery} 
+        setFilterType={setFilterType}
+        filterType={filterType}
+        okregi={okregi} 
+        isLoading={isLoading} 
+        filtered={filtered} 
+        handleBuy={handleBuy} />
       </div>
       <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar}><Alert onClose={handleCloseSnackbar} severity={snackbar.severity} className="rounded-2xl font-bold shadow-2xl">{snackbar.message}</Alert></Snackbar>
     </div>

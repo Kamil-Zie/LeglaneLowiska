@@ -10,10 +10,12 @@ import Profil from './components/WebPage/Profil';
 import Portal from './components/WebPage/Portal';
 import KupLicencje from './components/WebPage/KupLicencje';
 import Friends from './components/WebPage/Friends';
+import Ranking from './components/WebPage/Ranking';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from '@mui/material/styles';
 import { getTheme } from './theme';
 import axios from './api/axios';
+import AdminPanel from './components/AdminPanel';
 
 export const ThemeContext = React.createContext();
 
@@ -89,6 +91,8 @@ function App() {
               <Route path="/portal" element={<ProtectedRoute><Portal /></ProtectedRoute>} />
               <Route path="/kup-licencje" element={<ProtectedRoute><KupLicencje /></ProtectedRoute>} />
               <Route path="/znajomi" element={<ProtectedRoute><Friends /></ProtectedRoute>} />
+              <Route path="/ranking" element={<ProtectedRoute><Ranking /></ProtectedRoute>} />
+              <Route path="/admin" element={<ProtectedRoute><AdminPanel/></ProtectedRoute>} />
             </Routes>
           </AuthProvider>
         </BrowserRouter>

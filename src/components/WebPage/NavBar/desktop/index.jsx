@@ -1,9 +1,8 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../context/AuthContext';
+import { useAuth } from '../../../../context/AuthContext';
 import { Badge } from '@mui/material';
 import { useContext } from 'react';
-import { ThemeContext } from '../../../App';
-import './navbar.css';
+import { ThemeContext } from '../../../../App';
 
 const NavBar = () => {
   const { user, signOut } = useAuth();
@@ -49,6 +48,12 @@ const NavBar = () => {
 
         {/* Right Side Actions */}
         <div className="flex items-center gap-4">
+          <Link to="/ranking" className="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-sky-400 transition-colors no-underline flex items-center">
+            <span className="material-symbols-outlined p-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors duration-200 rounded-full">
+              military_tech
+            </span>
+          </Link>
+
           <button 
             onClick={toggleColorMode}
             className="material-symbols-outlined p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors duration-200 rounded-full border-none bg-transparent cursor-pointer"
@@ -69,6 +74,14 @@ const NavBar = () => {
               account_circle
             </span>
           </Link>
+
+          {user.rola === "admin" && (
+            <Link to="/admin" className="text-rose-600 hover:text-red-600 transition-colors no-underline">
+              <span className="material-symbols-outlined p-2 hover:bg-slate-50 transition-colors duration-200 rounded-full">
+                admin_panel_settings
+              </span>
+            </Link>
+          )}
 
           <button
             onClick={async () => {

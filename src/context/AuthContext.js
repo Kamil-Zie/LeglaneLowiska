@@ -30,7 +30,6 @@ export const AuthProvider = ({ children }) => {
             const response = await axios.post('/users/signin', { email, password, turnstileToken });
             const loggedInUser = response.data.user;
             setUser(loggedInUser);
-
             if (rememberMe) {
                 localStorage.setItem('userId', loggedInUser._id);
             } else {

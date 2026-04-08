@@ -1,5 +1,3 @@
-import React from 'react';
-
 const LicencjaCard = ({ lic, okreg, onBuy }) => {
   return (
     <div className="group bg-surface-container-lowest rounded-[2rem] border border-solid border-outline-variant dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col h-full">
