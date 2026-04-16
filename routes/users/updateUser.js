@@ -3,6 +3,27 @@ const router = express.Router();
 const User = require('../../models/uzytkownik');
 const {verifyToken} = require('../../utils/JWT_Token')
 const jwt = require('jsonwebtoken');
+const {verifyAdminToken} = require('../../utils/JWT_Token')
+
+router.put("/admin/:id", verifyAdminToken, async (req, res) => {
+    const userId = req.params.id;
+    const { nazwa, miasto, email, opis, nrKartyPZW, lokalizacja, rola } = req.body;
+
+    try {
+        const updatedUser = await User.findByIdAndUpdate(
+            userId, 
+            { nazwa, miasto, email, opis, nrKartyPZW, lokalizacja, rola }, 
+            { new: true }
+        );
+        
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found!" });
+        }
+        res.status(200).json({ message: "User updated successfully!", user: updatedUser });
+    } catch (err) {
+        res.status(500).json({ message: "Error updating user!", error: err });
+    }
+});
 
 router.put("/:id", verifyToken, async (req, res) => {
     const userId = req.params.id;

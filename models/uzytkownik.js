@@ -12,6 +12,8 @@ const UserSchema = new mongoose.Schema({
     posiadaneLicencje: [{ type: {idLicencji:{type:mongoose.Schema.Types.ObjectId,ref: 'Licencje'} , startLicencji:Date, koniecLicencji:Date} }],
     iloscOpinii: { type: Number, default: 0 },
     ulubioneLowiska: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Lowisko' }],
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Uzytkownik' }],
+    friendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Uzytkownik' }],
     czlonePZW: { type: String, default: false },
     createdAt: { type: Date, default: Date.now },
     rola: { type: String, default: "user" }

@@ -82,6 +82,24 @@ router.post('/decline/:id', verifyToken, async (req, res) => {
     }
 });
 
+// Cancel Sent Friend Request
+router.post('/cancel/:id', verifyToken, async (req, res) => {
+    const targetUserId = req.params.id;
+    const currentUserId = req.user.id;
+
+    try {
+        const targetUser = await User.findById(targetUserId);
+        if (!targetUser) return res.status(404).json({ message: "Użytkownik nie znaleziony!" });
+
+        targetUser.friendRequests = targetUser.friendRequests.filter(id => id.toString() !== currentUserId);
+        await targetUser.save();
+
+        res.status(200).json({ message: "Zaproszenie anulowane!" });
+    } catch (err) {
+        res.status(500).json({ message: "Błąd podczas anulowania zaproszenia!", error: err });
+    }
+});
+
 // Remove Friend
 router.delete('/:id', verifyToken, async (req, res) => {
     const friendId = req.params.id;
@@ -144,9 +162,13 @@ router.get('/list', verifyToken, async (req, res) => {
         const user = await User.findById(req.user.id).populate('friends', 'nazwa miasto opis');
         const pendingRequests = await User.findById(req.user.id).populate('friendRequests', 'nazwa miasto opis');
         
+        // Find users to whom the current user sent requests
+        const sentRequests = await User.find({ friendRequests: req.user.id }).select('nazwa miasto opis');
+
         res.status(200).json({ 
             friends: user.friends,
-            pendingRequests: pendingRequests.friendRequests
+            pendingRequests: pendingRequests.friendRequests,
+            sentRequests: sentRequests
         });
     } catch (err) {
         res.status(500).json({ message: "Błąd podczas pobierania listy znajomych!", error: err });

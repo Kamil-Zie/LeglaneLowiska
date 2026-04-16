@@ -8,11 +8,19 @@ const PostSchema = new mongoose.Schema({
     miejsce: { type: String, required: true },
     opis: { type: String },
     zdjecie: { type: String }, // optional photo URL or base64
+    sharedPost: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
     polubienia: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Uzytkownik' }],
     komentarze: [{
         uzytkownik: { type: mongoose.Schema.Types.ObjectId, ref: 'Uzytkownik' },
         tekst: { type: String, required: true },
-        data: { type: Date, default: Date.now }
+        data: { type: Date, default: Date.now },
+        polubienia: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Uzytkownik' }],
+        odpowiedzi: [{
+            uzytkownik: { type: mongoose.Schema.Types.ObjectId, ref: 'Uzytkownik' },
+            tekst: { type: String, required: true },
+            data: { type: Date, default: Date.now },
+            polubienia: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Uzytkownik' }]
+        }]
     }],
     createdAt: { type: Date, default: Date.now }
 });
